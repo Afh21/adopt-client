@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 
 import { Menu, Icon, Button } from "antd";
 
-import "./navbar.css";
-
 class Navbar extends Component {
   state = {
     current: "home"
