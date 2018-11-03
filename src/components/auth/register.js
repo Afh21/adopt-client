@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
+// Actions
+import { registerUser } from "../../redux/actions/authActions";
+
+// Design
 import { Form, Input, Select, Button, Divider, Icon } from "antd";
 import "./auth.css";
 
@@ -14,20 +21,12 @@ class Register extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
+      values.phone = values.prefix + "" + values.phone;
+      values.prefix = "";
       if (!err) {
-        console.log("Received values of form: ", values);
+        this.props.registerUser(values, this.props.history);
       }
     });
-  };
-
-  handleEvaluateIdentity = e => {
-    const { getFieldError } = this.props.form;
-    console.log(
-      "value: ",
-      e.target.value,
-      " valid: ",
-      getFieldError("identity")
-    );
   };
 
   handleConfirmBlur = e => {
@@ -145,7 +144,7 @@ class Register extends Component {
                     <Icon type="idcard" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   placeholder="Número de identificación"
-                  onInput={this.handleEvaluateIdentity.bind(this)}
+                  // onInput={this.handleEvaluateIdentity.bind(this)}
                 />
               )}
             </FormItem>
@@ -251,9 +250,21 @@ class Register extends Component {
   }
 }
 
-Register.propTypes = {};
+const mapStateToProps = state => ({
+  auth: state.auth,
+  error: state.error
+});
 
-export default Form.create()(Register);
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired
+};
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(Form.create()(withRouter(Register)));
 
 /*
 

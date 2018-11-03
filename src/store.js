@@ -1,13 +1,12 @@
-/*
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import rootReducer from "./reducers";
+import index from "./redux/reducers";
 
 const initialState = {};
 
 const middleware = [thunk];
 const store = createStore(
- rootReducer,
+  index,
   initialState,
   compose(
     applyMiddleware(...middleware),
@@ -16,5 +15,3 @@ const store = createStore(
 );
 
 export default store;
-
-*/
