@@ -1,12 +1,12 @@
 import React from "react";
 import { Layout, Menu, Icon } from "antd";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
-const MenuLinkSidebar = ({ state }) => {
+const MenuLinkSidebar = ({ state, match }) => {
   return (
     <div>
       <Sider trigger={null} collapsible collapsed={state.collapsed}>
@@ -26,12 +26,16 @@ const MenuLinkSidebar = ({ state }) => {
             }
           >
             <Menu.Item key="1">
-              <Icon type="dashboard" />
-              <span>Dashboard</span>
+              <Link to={`${match.url}`}>
+                <Icon type="dashboard" />
+                <span>Dashboard</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="user" />
-              <span>Perfil</span>
+              <Link to={`${match.url}/user/profile`}>
+                <Icon type="user" />
+                <span>Perfil</span>
+              </Link>
             </Menu.Item>
           </SubMenu>
 
@@ -45,14 +49,16 @@ const MenuLinkSidebar = ({ state }) => {
             }
           >
             <Menu.Item key="3">
-              <Link to="/dashboard/animals">
+              <Link to={`${match.url}/animals`}>
                 <Icon type="bars" />
                 <span>Lista</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="4">
-              <Icon type="switcher" theme="outlined" />
-              <span>Registro</span>
+              <Link to={`${match.url}/animal/register`}>
+                <Icon type="switcher" theme="outlined" />
+                <span>Registro</span>
+              </Link>
             </Menu.Item>
           </SubMenu>
 
@@ -66,18 +72,22 @@ const MenuLinkSidebar = ({ state }) => {
             }
           >
             <Menu.Item key="6">
-              <Link to="/dashboard/users">
+              <Link to={`${match.url}/users`}>
                 <Icon type="bars" />
                 <span>Lista</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="7">
-              <Icon type="user-add" theme="outlined" />
-              <span>Registro</span>
+              <Link to={`${match.url}/user/register`}>
+                <Icon type="user-add" theme="outlined" />
+                <span>Registro</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="8">
-              <Icon type="audit" theme="outlined" />
-              <span>Adopciones</span>
+              <Link to={`${match.url}/user/adoptions`}>
+                <Icon type="audit" theme="outlined" />
+                <span>Adopciones</span>
+              </Link>
             </Menu.Item>
           </SubMenu>
 
@@ -85,22 +95,30 @@ const MenuLinkSidebar = ({ state }) => {
             key="settings"
             title={
               <span>
-                <Icon type="setting" theme="outlined" />
-                <span>Configuraciones</span>
+                <Link to={`${match.url}/settings`}>
+                  <Icon type="setting" theme="outlined" />
+                  <span>Configuraciones</span>
+                </Link>
               </span>
             }
           >
             <Menu.Item key="9">
-              <Icon type="bars" />
-              <span>Lista General</span>
+              <Link to={`${match.url}/master`}>
+                <Icon type="bars" />
+                <span>Lista General</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="10">
-              <Icon type="heart" theme="outlined" />
-              <span>TIpo Rh</span>
+              <Link to={`${match.url}/type/generate/rh`}>
+                <Icon type="heart" theme="outlined" />
+                <span>TIpo Rh</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="11">
-              <Icon type="tag" theme="outlined" />
-              <span>Tipo Raza</span>
+              <Link to={`${match.url}/type/generate/breed`}>
+                <Icon type="tag" theme="outlined" />
+                <span>Tipo Raza</span>
+              </Link>
             </Menu.Item>
           </SubMenu>
         </Menu>
@@ -110,7 +128,8 @@ const MenuLinkSidebar = ({ state }) => {
 };
 
 MenuLinkSidebar.propTypes = {
-  state: PropTypes.object.isRequired
+  state: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-export default MenuLinkSidebar;
+export default withRouter(MenuLinkSidebar);

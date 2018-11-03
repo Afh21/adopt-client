@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import { Layout, Icon } from "antd";
 import MenuLinkSidebar from "./sider";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  withRouter
-} from "react-router-dom";
+import PropTypes from "prop-types";
+import { Switch, Route, withRouter } from "react-router-dom";
 
-import User from "../dashboard/user/user";
+// Components
+// import User from "../dashboard/user/user";
 import Animal from "../dashboard/animal/animal";
+import Dashboard from "../dashboard/dashboard/dashboard";
+import User from "../dashboard/user/user";
+import Adoptions from "../dashboard/adoption/adoption";
+import Master from "../dashboard/master/master";
 
-import "../dashboard/dashboard.css";
+// Css
+import "../dashboard/dashboard/dashboard.css";
 
 const { Header, Content, Footer } = Layout;
 
@@ -27,97 +29,54 @@ class Sidebar extends Component {
   };
 
   render() {
+    const { match } = this.props;
+    console.log(match.path);
     return (
-      <Router>
+      <Layout>
+        {/* Links Sidebar */}
+        <MenuLinkSidebar state={this.state} match={this.props.match} />
+
         <Layout>
-          {/* Links Sidebar */}
-          <MenuLinkSidebar state={this.state} />
+          <Header style={{ background: "#fff", padding: 0 }}>
+            <Icon
+              className="trigger"
+              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+              onClick={this.toggle}
+            />
+          </Header>
 
-          <Layout>
-            <Header style={{ background: "#fff", padding: 0 }}>
-              <Icon
-                className="trigger"
-                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-                onClick={this.toggle}
+          <Content
+            style={{
+              margin: "24px 16px",
+              padding: 24,
+              background: "#fff",
+              minHeight: 645
+            }}
+          >
+            <Switch>
+              <Route exact path={`${match.url}`} component={Dashboard} />
+              <Route exact path={`${match.path}/animals`} component={Animal} />
+              <Route exact path={`${match.path}/users`} component={User} />
+              <Route
+                exact
+                path={`${match.path}/adoptions`}
+                component={Adoptions}
               />
-            </Header>
+              <Route exact path={`${match.path}/master`} component={Master} />
+            </Switch>
+          </Content>
 
-            <Content
-              style={{
-                margin: "24px 16px",
-                padding: 24,
-                background: "#fff",
-                minHeight: 645
-              }}
-            >
-              <Switch>
-                <Route exact path="/dashboard/users" component={User} />
-                <Route
-                  exact
-                  path="/dashboard/profile/:userId"
-                  component={null}
-                />
-
-                <Route exact path="/dashboard/user/register" component={null} />
-                <Route
-                  exact
-                  path="/dashboard/user/update/:userId"
-                  component={null}
-                />
-                <Route exact path="/dashboard/adoptions/" component={null} />
-                <Route exact path="/dashboard/animals/" component={Animal} />
-                <Route
-                  exact
-                  path="/dashboard/animal/register"
-                  component={null}
-                />
-                <Route
-                  exact
-                  path="/dashboard/animal/update/:animalId"
-                  component={null}
-                />
-                <Route exact path="/dashboard/master/" component={null} />
-                <Route
-                  exact
-                  path="/dashboard/master/type-rh"
-                  component={null}
-                />
-                <Route
-                  exact
-                  path="/dashboard/master/type-rh/register"
-                  component={null}
-                />
-                <Route
-                  exact
-                  path="/dashboard/master/type-rh/update/:typeId"
-                  component={null}
-                />
-                <Route
-                  exact
-                  path="/dashboard/master/type-breed"
-                  component={null}
-                />
-                <Route
-                  exact
-                  path="/dashboard/master/type-breed/register"
-                  component={null}
-                />
-                <Route
-                  exact
-                  path="/dashboard/master/type-breed/upate/:breedId"
-                  component={null}
-                />
-              </Switch>
-            </Content>
-
-            <Footer style={{ textAlign: "center" }}>
-              Powered By Ing. Andres Felipe H. © 2018
-            </Footer>
-          </Layout>
+          <Footer style={{ textAlign: "center" }}>
+            Powered By Ing. Andres Felipe H. © 2018
+          </Footer>
         </Layout>
-      </Router>
+      </Layout>
     );
   }
 }
+
+Sidebar.propTypes = {
+  match: PropTypes.object.isRequired
+};
 
 export default withRouter(Sidebar);
