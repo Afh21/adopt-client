@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Actions
@@ -193,7 +193,6 @@ class Register extends Component {
                 />
               )}
             </FormItem>
-
             <FormItem label="Confirmar contraseña">
               {getFieldDecorator("password2", {
                 rules: [
@@ -216,8 +215,7 @@ class Register extends Component {
                 />
               )}
             </FormItem>
-
-            <FormItem label="Phone Number">
+            <FormItem label="Número telefónico">
               {getFieldDecorator("phone", {
                 rules: [
                   {
@@ -236,13 +234,13 @@ class Register extends Component {
                 />
               )}
             </FormItem>
-
             <FormItem>
               <Button type="primary" htmlType="submit">
                 Registrarse
               </Button>
             </FormItem>
             <Divider orientation="left"> ** **</Divider>
+            Ya tienes una cuenta. <Link to="/login"> Inicia Sesión </Link>
           </Form>
         </div>
       </div>

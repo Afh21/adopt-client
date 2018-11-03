@@ -33,8 +33,10 @@ class Navbar extends Component {
           </Menu.Item>
 
           <Menu.Item key="open">
-            <Icon type="unlock" />
-            Iniciar Sesión
+            <Link to="/login">
+              <Icon type="unlock" />
+              Iniciar Sesión
+            </Link>
           </Menu.Item>
 
           <Menu.Item key="register">

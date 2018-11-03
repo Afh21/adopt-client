@@ -39,6 +39,26 @@ body {
   margin-bottom: 2px !important;
 }
 
+/* Login */
+.login-form {
+  max-width: 300px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.ant-divider-horizontal.ant-divider-with-text-left {
+  margin: 8px !important;
+}
+
+.link {
+  margin-bottom: 20px;
+}
 /*
 text-align: center;
 max-width: 450px;

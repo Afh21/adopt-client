@@ -1,10 +1,13 @@
 import React from "react";
 import Sidebar from "../../layout/sidebar";
+import { withRouter } from "react-router-dom";
 
-const Index = () => (
-  <div>
-    <Sidebar />
-  </div>
-);
+const IndexDashboard = () => {
+  return (
+    <div>
+      <Sidebar />
+    </div>
+  );
+};
 
-export default Index;
+export default withRouter(IndexDashboard);
