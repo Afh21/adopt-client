@@ -5,12 +5,13 @@ import PropTypes from "prop-types";
 import { Switch, Route, withRouter } from "react-router-dom";
 
 // Components
-// import User from "../dashboard/user/user";
 import Animal from "../dashboard/animal/animal";
 import Dashboard from "../dashboard/dashboard/dashboard";
 import User from "../dashboard/user/user";
 import Adoptions from "../dashboard/adoption/adoption";
 import Master from "../dashboard/master/master";
+
+// import NoFound from "../noFound/not-found";
 
 // Css
 import "../dashboard/dashboard/dashboard.css";
@@ -59,10 +60,11 @@ class Sidebar extends Component {
               <Route exact path={`${match.path}/users`} component={User} />
               <Route
                 exact
-                path={`${match.path}/adoptions`}
+                path={`${match.path}/user/adoptions`}
                 component={Adoptions}
               />
               <Route exact path={`${match.path}/master`} component={Master} />
+              {/* <Redirect to="/no-found" component={NoFound} /> */}
             </Switch>
           </Content>
 

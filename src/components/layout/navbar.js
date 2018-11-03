@@ -38,8 +38,10 @@ class Navbar extends Component {
           </Menu.Item>
 
           <Menu.Item key="register">
-            <Icon type="link" />
-            Registrarse
+            <Link to="/register">
+              <Icon type="link" />
+              Registrarse
+            </Link>
           </Menu.Item>
 
           <Menu.Item key="dashboard">

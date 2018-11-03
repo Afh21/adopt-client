@@ -1,15 +1,11 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Components
 import Landing from "./components/layout/landing";
+import Login from "./components/auth/login";
+import Register from "./components/auth/register";
 import Render from "./components/dashboard/dashboard/index";
-import NoFound from './components/noFound/not-found';
 
 // Css ---> <Route exact path="/dashboard/users/" component={User} />
 import "./App.css";
@@ -21,10 +17,9 @@ class App extends Component {
         <div>
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/login" component={null} />
-            <Route exact path="/register" component={null} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
             <Route path="/dashboard" component={Render} />
-            <Redirect component={NoFound}></Redirect>
           </Switch>
         </div>
       </Router>
