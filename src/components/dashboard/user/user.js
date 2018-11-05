@@ -2,11 +2,7 @@ import React, { Component } from "react";
 
 class User extends Component {
   render() {
-    return (
-      <div>
-        <h1>Lista de Usuarios</h1>
-      </div>
-    );
+    return <h3>Usuarios List</h3>;
   }
 }
 

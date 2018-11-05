@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import { Layout, Menu, Icon } from "antd";
 import { Link, withRouter } from "react-router-dom";
@@ -148,3 +149,5 @@ MenuLinkSidebar.propTypes = {
 };
 
 export default withRouter(MenuLinkSidebar);
+
+*/
