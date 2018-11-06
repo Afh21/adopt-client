@@ -13,11 +13,11 @@ import {
 export const getAllTypeBreeds = () => dispatch => {
   dispatch(setLoading());
   axios
-    .get(`${URL}/master/detail/breed`)
+    .get(`${URL}/master/detail/breed/type-breed`)
     .then(res =>
       dispatch({
         type: GET_TYPES_BREED,
-        payload: res.data
+        payload: res.data.data // Obtener la data
       })
     )
     .catch(err =>

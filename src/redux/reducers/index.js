@@ -10,5 +10,5 @@ import typeReducer from "../reducers/settings/typeReducer";
 export default combineReducers({
   auth: authReducer,
   error: errorReducer,
-  rhs: typeReducer
+  breeds: typeReducer
 });

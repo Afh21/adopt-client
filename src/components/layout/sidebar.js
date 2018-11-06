@@ -202,20 +202,28 @@ class Sidebar extends Component {
                 <Route exact path={`${match.path}`} component={Dashboard} />
                 <Route exact path={`${match.path}animals`} component={Animal} />
                 <Route
+                  exact
                   path={`${match.path}animal/register`}
                   component={RegisterAnimal}
                 />
-                <Route path={`${match.path}users`} component={User} />
+                <Route exact path={`${match.path}users`} component={User} />
                 <Route
+                  exact
                   path={`${match.path}user/register`}
                   component={RegisterUser}
                 />
                 <Route
+                  exact
                   path={`${match.path}user/adoptions`}
                   component={Adoptions}
                 />
-                <Route path={`${match.path}master/type-rh`} component={Rh} />
                 <Route
+                  exact
+                  path={`${match.path}master/type-rh`}
+                  component={Rh}
+                />
+                <Route
+                  exact
                   path={`${match.path}master/type-breed`}
                   component={Breed}
                 />

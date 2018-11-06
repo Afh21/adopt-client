@@ -15,6 +15,8 @@ import store from "./store";
 import { setAuthToken } from "./utilities/BearerToken/setToken";
 import { setCurrentUser, logoutUser } from "./redux/actions/authActions";
 
+// Antd
+import { message } from "antd";
 import "./App.css";
 
 // Check LocalStore
@@ -32,6 +34,8 @@ if (localStorage.jwtToken) {
   // Check for expired token
   const currentTIme = Date.now() / 1000;
   if (decoded.exp < currentTIme) {
+    message.success("La sesión está a punto de terminar", 5);
+
     // Logout user
     store.dispatch(logoutUser());
 
@@ -41,7 +45,7 @@ if (localStorage.jwtToken) {
     // Clear current profile
     // Redirect to login
 
-    window.location.href = "/";
+    window.location.href = "/login";
   }
 }
 
