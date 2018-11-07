@@ -18,7 +18,7 @@ import Dashboard from "../dashboard/dashboard/dashboard";
 import User from "../dashboard/user/user";
 import RegisterUser from "../dashboard/user/register";
 import Adoptions from "../dashboard/adoption/adoption";
-import Breed from "../dashboard/master/type-breed";
+import Breed from "../../components/dashboard/master/type-breed/type-breed";
 import Rh from "../dashboard/master/type-rh";
 // import ProtectedRoute from "../../utilities/RoutesProtected/ProtectedRoute";
 // import NoFound from "../noFound/not-found";

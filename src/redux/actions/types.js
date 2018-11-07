@@ -13,6 +13,7 @@ export const GET_TYPES_RH = "GET_TYPE_RH";
 
 export const ADD_TYPE_BREED = "ADD_TYPE_BREED";
 export const GET_TYPES_BREED = "GET_TYPES_BREED";
+export const DELETE_TYPE_BREED = "DELETE_TYPE_BREED";
 
 // Actions Globals
 export const LOADING = "LOADING";

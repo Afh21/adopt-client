@@ -1,14 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Functions Redux
-import { getAllTypeBreeds } from "../../../redux/actions/settings/typeAction";
+import {
+  getAllTypeBreeds,
+  deleteTypeBreed
+} from "../../../../redux/actions/settings/typeAction";
+
+// Components
+import TypeBreedCreate from "./type-breed-create";
 
 // Antd & Styles
-import { Table, Divider, Tag, Button, Icon } from "antd";
-import "./types.css";
+import { Table, Divider, Button, Modal } from "antd";
+import "../types.css";
+
+const confirm = Modal.confirm;
 
 class Breed extends Component {
   constructor(props) {
@@ -23,12 +30,31 @@ class Breed extends Component {
   }
 
   handleEditBreed = e => {
-    console.log("Edit breed: ", e);
+    console.log("Edit breed: ", e.key);
   };
 
   handleDeleteBreed = e => {
-    console.log("Delete breed: ", e);
+    const { deleteTypeBreed } = this.props;
+    confirm({
+      title: `Estas seguro de eliminar esta raza - ${e.breed} -`,
+      content: "Esto eliminará de forma irreversible el dato!",
+      okText: "Eliminar",
+      okType: "danger",
+      cancelText: "Cancelar",
+      onOk() {
+        deleteTypeBreed(e.key);
+      },
+      onCancel() {}
+    });
   };
+
+  /*    
+      notification.open({
+        message: "Ups!",
+        description: "Algo sucedió al crear la raza, verifica por favor!",
+        icon: <Icon type="frown" style={{ color: "#108ee9" }} />
+      });    
+    */
 
   componentDidMount = () => {
     this.props.getAllTypeBreeds();
@@ -51,7 +77,7 @@ class Breed extends Component {
         render: item => (
           <span>
             <Button
-              className="buttonEdit"
+              className=".ant-btn-edit"
               icon="edit"
               onClick={this.handleEditBreed.bind(this, item)}
             >
@@ -81,12 +107,19 @@ class Breed extends Component {
           breed: breed.name
         });
       });
-      table = <Table {...state} columns={columns} dataSource={data} />;
+      table = (
+        <Table {...state} columns={columns} dataSource={data} size="small" />
+      );
     } else {
-      table = "No hay datos para mostrar!";
+      table = <h3>No hay datos para mostrar</h3>;
     }
 
-    return <div className="tableBreed">{table}</div>;
+    return (
+      <div className="">
+        <TypeBreedCreate />
+        <div className="tableBreed">{table}</div>
+      </div>
+    );
   }
 }
 
@@ -94,7 +127,8 @@ Breed.propTypes = {
   auth: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired,
   breeds: PropTypes.object.isRequired,
-  getAllTypeBreeds: PropTypes.func.isRequired
+  getAllTypeBreeds: PropTypes.func.isRequired,
+  deleteTypeBreed: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -105,5 +139,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAllTypeBreeds }
+  { getAllTypeBreeds, deleteTypeBreed }
 )(Breed);

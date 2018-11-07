@@ -1,4 +1,9 @@
-import { GET_TYPES_BREED, LOADING } from "../../actions/types";
+import {
+  GET_TYPES_BREED,
+  LOADING,
+  ADD_TYPE_BREED,
+  DELETE_TYPE_BREED
+} from "../../actions/types";
 
 const initialState = {
   breeds: [],
@@ -17,6 +22,16 @@ export default function(state = initialState, action) {
         ...state,
         breeds: action.payload,
         loading: false
+      };
+    case ADD_TYPE_BREED:
+      return {
+        ...state,
+        breeds: [action.payload, ...state.breeds]
+      };
+    case DELETE_TYPE_BREED:
+      return {
+        ...state,
+        breeds: action.payload
       };
     default:
       return state;

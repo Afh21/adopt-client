@@ -1,3 +1,21 @@
-.ant-btn {
+.ant-btn-edit {
   border-color: #efb200 !important;
+}
+
+.tableBreed {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  background: #fff;
+  padding: 7px 7px;
+  margin: 20px auto;
+}
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  text-transform: capitalize;
 }
