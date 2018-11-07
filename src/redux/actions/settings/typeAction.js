@@ -1,17 +1,17 @@
 import axios from "axios";
 import { URL } from "../../../utilities/config";
 import {
-  GET_ERRORS,
-  // ADD_TYPE_RH,
-  // GET_TYPES_RH,
   CLEAR_ERRORS,
+  GET_ERRORS,
+  ADD_TYPE_RH,
   ADD_TYPE_BREED,
+  GET_TYPES_RH,
   GET_TYPES_BREED,
-  LOADING,
-  DELETE_TYPE_BREED
+  LOADING
 } from "../types";
 
-// Get (Type-Rh)
+//  ========================= BREEDS =================================
+
 export const getAllTypeBreeds = () => dispatch => {
   dispatch(setLoading());
   axios
@@ -59,6 +59,58 @@ export const deleteTypeBreed = id => dispatch => {
       })
     );
 };
+
+//  ========================= RH =================================
+
+export const getAllTypeRhs = () => dispatch => {
+  dispatch(setLoading());
+  axios
+    .get(`${URL}/master/detail/rh/type-rh`)
+    .then(res =>
+      dispatch({
+        type: GET_TYPES_RH,
+        payload: res.data.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
+export const savedTypeRh = data => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`${URL}/master/detail/rh/type-rh`, data)
+    .then(res =>
+      dispatch({
+        type: ADD_TYPE_RH,
+        payload: res.data.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
+export const deleteTypeRH = id => dispatch => {
+  axios
+    .delete(`${URL}/master/detail/rh/type-rh/${id}`)
+    .then(() => dispatch(getAllTypeRhs()))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
+//  ========================= GLOBALS =================================
 
 export const setLoading = () => {
   return {

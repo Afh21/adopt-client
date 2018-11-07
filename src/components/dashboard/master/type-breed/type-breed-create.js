@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { savedTypeBreed } from "../../../../redux/actions/settings/typeAction";
 
 //  Css
-import { Modal, Button, Form, Input, Icon, notification } from "antd";
+import { Modal, Button, Form, Input, Icon } from "antd";
 const FormItem = Form.Item;
 
 class TypeBreedCreate extends Component {

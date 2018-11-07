@@ -5,10 +5,12 @@ import errorReducer from "./errorReducer";
 import authReducer from "./authReducer";
 
 // Master / Detail / Type - Rh
-import typeReducer from "../reducers/settings/typeReducer";
+import typeBreedReducer from "./settings/typeBreedReducer";
+import typeRhReducer from "./settings/typeRhReducer";
 
 export default combineReducers({
   auth: authReducer,
   error: errorReducer,
-  breeds: typeReducer
+  breeds: typeBreedReducer,
+  rhs: typeRhReducer
 });

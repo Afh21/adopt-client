@@ -12,7 +12,7 @@ import {
 import TypeBreedCreate from "./type-breed-create";
 
 // Antd & Styles
-import { Table, Divider, Button, Modal } from "antd";
+import { Table, Divider, Button, Modal, Spin } from "antd";
 import "../types.css";
 
 const confirm = Modal.confirm;
@@ -63,7 +63,7 @@ class Breed extends Component {
   render() {
     let table;
     const state = this.state;
-    const { breeds } = this.props.breeds;
+    const { breeds, loading } = this.props.breeds;
 
     const columns = [
       {
@@ -100,7 +100,9 @@ class Breed extends Component {
     ];
     const data = [];
 
-    if (breeds.length > 0) {
+    if (loading) {
+      table = <Spin size="large" />;
+    } else if (Object.keys(breeds).length > 0) {
       breeds.map(breed => {
         return data.push({
           key: breed._id,
