@@ -55,7 +55,6 @@ class Sidebar extends Component {
     const { user } = this.props.auth;
     const { match } = this.props;
 
-    console.log(match);
     return (
       <Router>
         <Layout>

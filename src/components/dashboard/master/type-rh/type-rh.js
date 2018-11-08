@@ -12,7 +12,7 @@ import {
 import TypeRhCreate from "./type-rh-create";
 
 // Css
-import { Switch, Divider, Button, Table, Spin, Modal } from "antd";
+import { Divider, Button, Table, Spin, Modal } from "antd";
 import "../types.css";
 
 const confirm = Modal.confirm;
@@ -23,17 +23,10 @@ class TypeRh extends Component {
 
     this.state = {
       formCreate: false,
-      pagination: false,
-      error: {}
+      pagination: false
     };
 
     this.handleDeleteRh = this.handleDeleteRh.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (Object.keys(nextProps.error).length > 0) {
-      this.setState({ error: nextProps.error });
-    }
   }
 
   componentDidMount = () => {
@@ -48,6 +41,7 @@ class TypeRh extends Component {
 
   handleDeleteRh = e => {
     const { deleteTypeRH } = this.props;
+    // Open modal
     confirm({
       title: `Eliminar rh  - ${e.rh} -`,
       content: "Esto eliminará de forma irreversible el dato!",
@@ -55,10 +49,15 @@ class TypeRh extends Component {
       okType: "danger",
       cancelText: "Cancelar",
       onOk() {
+        // Action redux
         deleteTypeRH(e.key);
       },
       onCancel() {}
     });
+  };
+
+  carryToChild = bool => {
+    this.setState({ formCreate: bool });
   };
 
   render() {
@@ -66,9 +65,6 @@ class TypeRh extends Component {
     const { formCreate } = this.state;
     const state = this.state;
     const { rhs, loading } = this.props.rhs;
-
-    const { error } = this.state;
-    console.log("render error: ", error);
 
     const columns = [
       {
@@ -123,9 +119,13 @@ class TypeRh extends Component {
 
     return (
       <div>
-        <Switch onClick={this.handleCreateRh} />
+        <Button onClick={this.handleCreateRh} icon="heart">
+          Crear Rh
+        </Button>
         <br /> <br />
-        {formCreate ? <TypeRhCreate /> : null}
+        {formCreate ? (
+          <TypeRhCreate communicateToChild={this.carryToChild} />
+        ) : null}
         <div className="tableBreed">{table}</div>
       </div>
     );

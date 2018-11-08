@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { savedTypeBreed } from "../../../../redux/actions/settings/typeAction";
 
 //  Css
-import { Modal, Button, Form, Input, Icon } from "antd";
+import { Button, Form, Input, Icon } from "antd";
 const FormItem = Form.Item;
 
 class TypeBreedCreate extends Component {
@@ -14,98 +14,78 @@ class TypeBreedCreate extends Component {
     super(props);
 
     this.state = {
-      visible: false,
       confirmLoading: false
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!!nextProps.error) {
-      console.log(nextProps.error);
-    }
+  hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+  }
+
+  componentDidMount() {
+    // To disabled submit button at the beginning.
+    this.props.form.validateFields();
   }
 
   handleSubmit = e => {
+    const { communicateToChild } = this.props;
+
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
+        // Save
         this.props.savedTypeBreed(values);
+
+        // Send to false to Parent Component for hide the form
+        communicateToChild(false);
       }
     });
   };
 
-  showModal = () => {
-    this.setState({ visible: true });
-  };
-
-  handleOk = e => {
-    this.setState({ visible: false, confirmLoading: true });
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false
-      });
-    }, 4000);
-  };
-
-  handleCancel = e => {
-    this.setState({ visible: false });
-    const { form } = this.props;
-  };
-
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldsError,
+      getFieldError,
+      isFieldTouched
+    } = this.props.form;
+
+    // Only show error after a field is touched.
+    const breed = isFieldTouched("name") && getFieldError("name");
 
     return (
       <div>
-        <Button type="primary" onClick={this.showModal}>
-          Crear raza
-        </Button>
-        <Modal
-          title="Creación tipo de raza!"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel} icon="close">
-              {" "}
-              Cancelar
-            </Button>,
+        <br />
+        <Form onSubmit={this.handleSubmit} layout="inline">
+          <FormItem validateStatus={breed ? "error" : ""} help={breed || ""}>
+            {getFieldDecorator("name", {
+              rules: [
+                {
+                  required: true,
+                  message: "Por favor ingrese una raza!"
+                }
+              ]
+            })(
+              <Input
+                placeholder="Nombre de la raza"
+                prefix={
+                  <Icon type="tag" style={{ color: "rgba(0,0,0,.25)" }} />
+                }
+              />
+            )}
+          </FormItem>
+          <FormItem>
             <Button
-              key="submit"
               type="primary"
-              onClick={this.handleSubmit}
-              icon="form"
+              htmlType="submit"
+              icon="check"
+              disabled={this.hasErrors(getFieldsError())}
+              onClick={this.carryToParent}
             >
-              Guardar
+              Crear Raza
             </Button>
-          ]}
-        >
-          <Form>
-            <FormItem>
-              {getFieldDecorator("name", {
-                rules: [
-                  {
-                    type: "string",
-                    // pattern: /^[a-z](?!\s*$).+/,
-                    message: "Raza debe ser escrito en minúsculo!"
-                  },
-                  {
-                    required: true,
-                    message: "Por favor ingrese una raza!"
-                  }
-                ]
-              })(
-                <Input
-                  placeholder="Nombre de la raza"
-                  prefix={
-                    <Icon type="tag" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                />
-              )}
-            </FormItem>
-          </Form>
-        </Modal>
+          </FormItem>
+        </Form>
       </div>
     );
   }
@@ -113,7 +93,8 @@ class TypeBreedCreate extends Component {
 
 TypeBreedCreate.propType = {
   error: PropTypes.object.isRequired,
-  savedTypeBreed: PropTypes.func.isRequired
+  savedTypeBreed: PropTypes.func.isRequired,
+  communicateToChild: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

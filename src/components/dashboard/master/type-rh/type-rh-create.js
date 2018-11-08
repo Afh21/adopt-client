@@ -23,7 +23,11 @@ class TypeRhCreate extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        // Add rh
         this.props.savedTypeRh(values);
+
+        // Send component parent (false) for hide form.
+        this.props.communicateToChild(false);
       }
     });
   };
@@ -74,7 +78,8 @@ class TypeRhCreate extends Component {
 }
 
 TypeRhCreate.propType = {
-  savedTypeRh: PropTypes.func.isRequired
+  savedTypeRh: PropTypes.func.isRequired,
+  communicateToChild: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -85,5 +90,3 @@ export default connect(
   mapStateToProps,
   { savedTypeRh }
 )(Form.create()(TypeRhCreate));
-
-// Erocsturpede jejejejeje

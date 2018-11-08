@@ -22,17 +22,26 @@ class Breed extends Component {
     super(props);
 
     this.state = {
-      pagination: false
+      pagination: false,
+      visible: false,
+      visibleChild: true
     };
 
     this.handleEditBreed = this.handleEditBreed.bind(this);
     this.handleDeleteBreed = this.handleDeleteBreed.bind(this);
   }
 
+  // Function change form create breed
+  handleFormCreateBreed = () => {
+    this.setState({ visible: !this.state.visible });
+  };
+
+  // Function edit breed.
   handleEditBreed = e => {
     console.log("Edit breed: ", e.key);
   };
 
+  // Function delete breed
   handleDeleteBreed = e => {
     const { deleteTypeBreed } = this.props;
     confirm({
@@ -48,16 +57,13 @@ class Breed extends Component {
     });
   };
 
-  /*    
-      notification.open({
-        message: "Ups!",
-        description: "Algo sucedió al crear la raza, verifica por favor!",
-        icon: <Icon type="frown" style={{ color: "#108ee9" }} />
-      });    
-    */
-
+  // Get all breeds from redux
   componentDidMount = () => {
     this.props.getAllTypeBreeds();
+  };
+
+  carryToChild = bool => {
+    this.setState({ visible: bool });
   };
 
   render() {
@@ -65,6 +71,7 @@ class Breed extends Component {
     const state = this.state;
     const { breeds, loading } = this.props.breeds;
 
+    // Columns (columns) and Rows (data) for table
     const columns = [
       {
         title: "Raza",
@@ -100,6 +107,7 @@ class Breed extends Component {
     ];
     const data = [];
 
+    // Loading come from redux.
     if (loading) {
       table = <Spin size="large" />;
     } else if (Object.keys(breeds).length > 0) {
@@ -110,15 +118,23 @@ class Breed extends Component {
         });
       });
       table = (
+        // Render table only if there is data
         <Table {...state} columns={columns} dataSource={data} size="small" />
       );
     } else {
+      // Render this message if don't have data breeds.
       table = <h3>No hay datos para mostrar</h3>;
     }
 
     return (
       <div className="">
-        <TypeBreedCreate />
+        <Button onClick={this.handleFormCreateBreed} icon="form">
+          {" "}
+          Crear Raza
+        </Button>
+        {state.visible ? (
+          <TypeBreedCreate communicateToChild={this.carryToChild} />
+        ) : null}
         <div className="tableBreed">{table}</div>
       </div>
     );
