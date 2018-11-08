@@ -1,5 +1,5 @@
-import axios from "axios";
 import { GET_ERRORS, REGISTER_SUCCESSFULLY, SET_CURRENT_USER } from "./types";
+import axios from "axios";
 
 import { setAuthToken } from "../../utilities/BearerToken/setToken";
 import { URL } from "../../utilities/config";

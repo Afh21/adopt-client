@@ -13,7 +13,7 @@ import {
 
 // Components
 import Animal from "../dashboard/animal/animal";
-import RegisterAnimal from "../dashboard/animal/register";
+import RegisterAnimal from "../dashboard/animal/animal-register";
 import Dashboard from "../dashboard/dashboard/dashboard";
 import User from "../dashboard/user/user";
 import RegisterUser from "../dashboard/user/register";
