@@ -18,6 +18,7 @@ class TypeBreedCreate extends Component {
     };
   }
 
+  // Disabled bottom
   hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }

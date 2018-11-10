@@ -2,21 +2,51 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Css
-import { List, Avatar, Button, Spin, Tag, Icon, Divider } from "antd";
+import { List, Avatar, Button, Spin, Tag, Icon, Divider, Tooltip } from "antd";
 
 // Redux
 import { connect } from "react-redux";
 import { getAnimals } from "../../../redux/actions/animals";
 
 import "./animal.css";
+import AnimalProfile from "./animal-profile";
 
 class Animal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visibleProfile: false,
+      profileAnimal: {}
+    };
+
+    // Bind function to handleProfile
+    this.handleProfile = this.handleProfile.bind(this);
+  }
+
+  // Looking for a profile
+  handleProfile = e => {
+    this.setState({
+      visibleProfile: !this.state.visibleProfile,
+      profileAnimal: e
+    });
+  };
+
+  carryToChild = (bool, profile) => {
+    this.setState({
+      visibleProfile: bool,
+      profileAnimal: profile
+    });
+  };
+
   componentDidMount = () => {
     // Redux function
     this.props.getAnimals();
   };
 
   render() {
+    const { visibleProfile, profileAnimal } = this.state;
+
     const { animals, loading } = this.props.animals;
     const data = [];
     let content;
@@ -30,7 +60,8 @@ class Animal extends Component {
           name: animal.name,
           animal: animal.animal,
           genre: animal.genre,
-          state: animal.state
+          state: animal.state,
+          breed: animal.breed
         });
 
         return (content = (
@@ -48,7 +79,13 @@ class Animal extends Component {
               <List.Item
                 key={item.id}
                 actions={[
-                  <Button icon="solution"> Perfil </Button>,
+                  <Button
+                    icon="solution"
+                    onClick={this.handleProfile.bind(this, item)}
+                  >
+                    {" "}
+                    Perfil{" "}
+                  </Button>,
                   <Button type="primary" ghost>
                     {" "}
                     Adoptame!{" "}
@@ -67,24 +104,44 @@ class Animal extends Component {
               >
                 <List.Item.Meta
                   avatar={<Avatar src={item.avatar} />}
-                  title={<a href={item.href}>{item.name}</a>}
+                  title={
+                    <p style={{ textTransform: "uppercase" }}>{item.name}</p>
+                  }
                   description={""}
                 />
                 <Tag>{item.animal === "dog" ? "Perro" : "Gato"}</Tag>
-                <Tag>
-                  {item.genre === "male" ? (
-                    <Icon type="man" />
-                  ) : (
-                    <Icon type="woman" />
-                  )}{" "}
-                </Tag>
-                <Tag>
-                  {item.state === "healthy" ? (
-                    <Icon type="heart" />
-                  ) : (
-                    <Icon type="frown" />
-                  )}
-                </Tag>
+
+                <Tooltip title={"Raza"}>
+                  <Tag style={{ textTransform: "capitalize" }}>
+                    {item.breed.name}
+                  </Tag>
+                </Tooltip>
+
+                <Tooltip
+                  title={`${item.genre === "male" ? "Macho " : "Hembra"}`}
+                >
+                  <Tag>
+                    {item.genre === "male" ? (
+                      <Icon type="man" />
+                    ) : (
+                      <Icon type="woman" />
+                    )}{" "}
+                  </Tag>
+                </Tooltip>
+
+                <Tooltip
+                  title={`${
+                    item.state === "healthy" ? "Saludable" : "Enfermo"
+                  }`}
+                >
+                  <Tag>
+                    {item.state === "healthy" ? (
+                      <Icon type="heart" />
+                    ) : (
+                      <Icon type="frown" />
+                    )}
+                  </Tag>
+                </Tooltip>
               </List.Item>
             )}
           />
@@ -109,6 +166,10 @@ class Animal extends Component {
           ** Lista de animales disponibles para adoptar{" "}
         </Divider>
         {content}
+
+        {visibleProfile ? (
+          <AnimalProfile sendToChild={this.carryToChild} data={profileAnimal} />
+        ) : null}
       </div>
     );
   }

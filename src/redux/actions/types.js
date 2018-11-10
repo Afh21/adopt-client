@@ -16,6 +16,7 @@ export const GET_TYPES_BREED = "GET_TYPES_BREED";
 
 // Actions Animals
 export const GET_ANIMALS = "GET_ANIMALS";
+export const GET_ANIMAL = "GET_ANIMAL";
 
 // Actions Globals
 export const LOADING = "LOADING";

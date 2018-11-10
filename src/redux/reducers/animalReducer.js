@@ -1,7 +1,8 @@
-import { GET_ANIMALS, LOADING } from "../actions/types";
+import { GET_ANIMALS, GET_ANIMAL, LOADING } from "../actions/types";
 
 const initialState = {
   animals: [],
+  animal: {},
   loading: false
 };
 
@@ -16,6 +17,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         animals: action.payload,
+        loading: false
+      };
+    case GET_ANIMAL:
+      return {
+        ...state,
+        animal: action.payload,
         loading: false
       };
     default:

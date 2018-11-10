@@ -62,6 +62,7 @@ class Breed extends Component {
     this.props.getAllTypeBreeds();
   };
 
+  // Send to component child
   carryToChild = bool => {
     this.setState({ visible: bool });
   };
