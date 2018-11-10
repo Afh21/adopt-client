@@ -1,0 +1,23 @@
+.animalRegister {
+  width: 35%;
+  min-height: 100%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  background: #fff;
+  padding: 7px 7px;
+  margin: 20px auto;
+}
+
+.animalList {
+  width: 70%;
+  min-height: 100%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  background: #fff;
+  padding: 7px 7px;
+  margin: 20px auto;
+}

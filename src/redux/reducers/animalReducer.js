@@ -1,4 +1,4 @@
-import { ADD_ANIMAL, GET_ANIMALS, LOADING } from "../actions/types";
+import { GET_ANIMALS, LOADING } from "../actions/types";
 
 const initialState = {
   animals: [],
@@ -11,11 +11,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
-      };
-    case ADD_ANIMAL:
-      return {
-        ...state,
-        animals: [action.payload, ...state.animals]
       };
     case GET_ANIMALS:
       return {

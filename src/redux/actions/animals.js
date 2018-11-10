@@ -1,17 +1,11 @@
-import {
-  ADD_ANIMAL,
-  GET_ANIMALS,
-  LOADING,
-  GET_ERRORS,
-  CLEAR_ERRORS
-} from "./types";
+import { GET_ANIMALS, LOADING, GET_ERRORS, CLEAR_ERRORS } from "./types";
 import { URL } from "../../utilities/config";
 import axios from "axios";
 
 export const getAnimals = () => dispatch => {
   dispatch(setLoading());
   axios
-    .post(`${URL}/master/animal/`)
+    .get(`${URL}/master/animal/`)
     .then(res =>
       dispatch({
         type: GET_ANIMALS,
@@ -26,15 +20,13 @@ export const getAnimals = () => dispatch => {
     );
 };
 
-export const savedAnimal = data => dispatch => {
+export const savedAnimal = (data, history) => dispatch => {
   dispatch(clearErrors());
   axios
     .post(`${URL}/master/animal/create`, data)
-    .then(res =>
-      dispatch({
-        type: ADD_ANIMAL,
-        payload: res.data.data // Obtener la data
-      })
+    .then(() =>
+      // dispatch({ type: ADD_ANIMAL, payload: res.data.data  })
+      history.push("/dashboard/animals")
     )
     .catch(err =>
       dispatch({
