@@ -69,7 +69,7 @@ class RegisterAnimal extends Component {
     const state = isFieldTouched("state") && getFieldError("state");
 
     return (
-      <div className="animalRegister">
+      <div className="">
         <Form layout="horizontal" onSubmit={this.handleSubmit}>
           <Divider orientation="left">** Registrar animal</Divider>
           <FormItem

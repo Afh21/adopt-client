@@ -11,10 +11,14 @@ import typeRhReducer from "./settings/typeRhReducer";
 // Animals
 import animalReducer from "./animalReducer";
 
+// Users
+import userReducer from "./userReducer";
+
 export default combineReducers({
   auth: authReducer,
   error: errorReducer,
   breeds: typeBreedReducer,
   rhs: typeRhReducer,
-  animals: animalReducer
+  animals: animalReducer,
+  users: userReducer
 });

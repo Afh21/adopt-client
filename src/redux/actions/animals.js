@@ -1,10 +1,4 @@
-import {
-  GET_ANIMALS,
-  LOADING,
-  GET_ERRORS,
-  CLEAR_ERRORS,
-  GET_ANIMAL
-} from "./types";
+import { GET_ANIMALS, LOADING, GET_ERRORS, CLEAR_ERRORS } from "./types";
 import { URL } from "../../utilities/config";
 import axios from "axios";
 
@@ -15,24 +9,6 @@ export const getAnimals = () => dispatch => {
     .then(res =>
       dispatch({
         type: GET_ANIMALS,
-        payload: res.data.data
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response
-      })
-    );
-};
-
-export const getProfileAnimal = id => dispatch => {
-  dispatch(setLoading());
-  axios
-    .get(`${URL}/master/animal/profile/${id}`)
-    .then(res =>
-      dispatch({
-        type: GET_ANIMAL,
         payload: res.data.data
       })
     )

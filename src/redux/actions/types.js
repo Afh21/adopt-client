@@ -16,7 +16,10 @@ export const GET_TYPES_BREED = "GET_TYPES_BREED";
 
 // Actions Animals
 export const GET_ANIMALS = "GET_ANIMALS";
-export const GET_ANIMAL = "GET_ANIMAL";
+
+// Actions Register Admin
+export const GET_USERS = "GET_USERS";
+export const REGISTER_ADMINISTRATOR = "REGISTER_ADMINISTRATOR";
 
 // Actions Globals
 export const LOADING = "LOADING";

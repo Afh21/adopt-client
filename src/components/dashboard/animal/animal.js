@@ -2,14 +2,26 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Css
-import { List, Avatar, Button, Spin, Tag, Icon, Divider, Tooltip } from "antd";
+import {
+  List,
+  Avatar,
+  Button,
+  Spin,
+  Tag,
+  Icon,
+  Divider,
+  Tooltip,
+  Modal
+} from "antd";
 
 // Redux
 import { connect } from "react-redux";
-import { getAnimals } from "../../../redux/actions/animals";
+import { getAnimals, deleteAnimal } from "../../../redux/actions/animals";
 
 import "./animal.css";
 import AnimalProfile from "./animal-profile";
+
+const confirm = Modal.confirm;
 
 class Animal extends Component {
   constructor(props) {
@@ -22,6 +34,7 @@ class Animal extends Component {
 
     // Bind function to handleProfile
     this.handleProfile = this.handleProfile.bind(this);
+    this.handleDeleteAnimal = this.handleDeleteAnimal.bind(this);
   }
 
   // Looking for a profile
@@ -32,6 +45,7 @@ class Animal extends Component {
     });
   };
 
+  // Send info to child component
   carryToChild = (bool, profile) => {
     this.setState({
       visibleProfile: bool,
@@ -39,6 +53,22 @@ class Animal extends Component {
     });
   };
 
+  handleDeleteAnimal = e => {
+    const { deleteAnimal } = this.props;
+    confirm({
+      title: `Estás a punto de eliminar a - '${e.name}' `,
+      content: "No hay reversa para esta acción!",
+      okText: "Confirmar!",
+      okType: "danger",
+      cancelText: "Cancelar!",
+      onOk() {
+        deleteAnimal(e.id);
+      },
+      onCancel() {}
+    });
+  };
+
+  // Lifecycle hook
   componentDidMount = () => {
     // Redux function
     this.props.getAnimals();
@@ -61,7 +91,15 @@ class Animal extends Component {
           animal: animal.animal,
           genre: animal.genre,
           state: animal.state,
-          breed: animal.breed
+          breed: animal.breed,
+          rh: animal.rh,
+          height: animal.height,
+          weight: animal.weight,
+          born: animal.born,
+          age: animal.age,
+          typeHeight: animal.typeHeight,
+          typeWeight: animal.typeWeight,
+          image: animal.image
         });
 
         return (content = (
@@ -86,15 +124,22 @@ class Animal extends Component {
                     {" "}
                     Perfil{" "}
                   </Button>,
-                  <Button type="primary" ghost>
+                  <Button type="primary" ghost icon="">
                     {" "}
                     Adoptame!{" "}
+                  </Button>,
+                  <Button
+                    type="danger"
+                    ghost
+                    onClick={this.handleDeleteAnimal.bind(this, item)}
+                  >
+                    {" "}
+                    Eliminar
                   </Button>
                 ]}
                 extra={
                   <img
-                    width={272}
-                    alt="logo"
+                    alt="image_animal"
                     src={
                       "http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
                     }
@@ -161,11 +206,8 @@ class Animal extends Component {
             Crear Animal
           </Button>
         </div>
-        <Divider orientation="left">
-          {" "}
-          ** Lista de animales disponibles para adoptar{" "}
-        </Divider>
-        {content}
+        <Divider orientation="left"> ** Lista de animales </Divider>
+        {animals.length ? content : "No hay datos para mostrar..."}
 
         {visibleProfile ? (
           <AnimalProfile sendToChild={this.carryToChild} data={profileAnimal} />
@@ -179,7 +221,8 @@ Animal.propTypes = {
   auth: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired,
   animals: PropTypes.object.isRequired,
-  getAnimals: PropTypes.func.isRequired
+  getAnimals: PropTypes.func.isRequired,
+  deleteAnimal: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -190,5 +233,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAnimals }
+  { getAnimals, deleteAnimal }
 )(Animal);

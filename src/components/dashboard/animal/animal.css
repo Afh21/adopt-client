@@ -21,3 +21,9 @@
   padding: 7px 7px;
   margin: 20px auto;
 }
+
+/* Profile */
+ul.profile > li {
+  padding: 5px;
+  list-style: none;
+}
