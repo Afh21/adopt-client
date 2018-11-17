@@ -1,4 +1,10 @@
-import { GET_ANIMALS, LOADING, GET_ERRORS, CLEAR_ERRORS } from "./types";
+import {
+  GET_ANIMALS,
+  LOADING,
+  GET_ERRORS,
+  CLEAR_ERRORS,
+  ADOPT_ANIMAL
+} from "./types";
 import { URL } from "../../utilities/config";
 import axios from "axios";
 
@@ -40,6 +46,23 @@ export const deleteAnimal = id => dispatch => {
   axios
     .delete(`${URL}/master/animal/delete/${id}`)
     .then(() => dispatch(getAnimals()))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
+export const adoptAnimal = id => dispatch => {
+  axios
+    .post(`${URL}/adoption/request/adoption?animal=${id}`)
+    .then(() =>
+      dispatch({
+        type: ADOPT_ANIMAL,
+        payload: id
+      })
+    )
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

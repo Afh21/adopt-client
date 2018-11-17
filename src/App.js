@@ -45,7 +45,7 @@ if (localStorage.jwtToken) {
     // Clear current profile
     // Redirect to login
 
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 }
 

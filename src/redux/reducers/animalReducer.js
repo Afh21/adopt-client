@@ -1,4 +1,4 @@
-import { GET_ANIMALS, LOADING } from "../actions/types";
+import { GET_ANIMALS, LOADING, ADOPT_ANIMAL } from "../actions/types";
 
 const initialState = {
   animals: [],
@@ -17,6 +17,11 @@ export default function(state = initialState, action) {
         ...state,
         animals: action.payload,
         loading: false
+      };
+    case ADOPT_ANIMAL:
+      return {
+        ...state,
+        animals: state.animals.filter(animal => animal._id !== action.payload)
       };
     default:
       return state;

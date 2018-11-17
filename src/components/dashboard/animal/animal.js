@@ -16,7 +16,11 @@ import {
 
 // Redux
 import { connect } from "react-redux";
-import { getAnimals, deleteAnimal } from "../../../redux/actions/animals";
+import {
+  getAnimals,
+  deleteAnimal,
+  adoptAnimal
+} from "../../../redux/actions/animals";
 
 import "./animal.css";
 import AnimalProfile from "./animal-profile";
@@ -35,6 +39,7 @@ class Animal extends Component {
     // Bind function to handleProfile
     this.handleProfile = this.handleProfile.bind(this);
     this.handleDeleteAnimal = this.handleDeleteAnimal.bind(this);
+    this.handleAdopt = this.handleAdopt.bind(this);
   }
 
   // Looking for a profile
@@ -68,6 +73,20 @@ class Animal extends Component {
     });
   };
 
+  handleAdopt = e => {
+    const { adoptAnimal } = this.props;
+    confirm({
+      title: `Estás a punto de adoptar a - '${e.name}' `,
+      content: "Dale amor y el mejor hogar a este animal.",
+      okText: "Confirmar!",
+      cancelText: "Cancelar!",
+      onOk() {
+        adoptAnimal(e.id);
+      },
+      onCancel() {}
+    });
+  };
+
   // Lifecycle hook
   componentDidMount = () => {
     // Redux function
@@ -76,6 +95,7 @@ class Animal extends Component {
 
   render() {
     const { visibleProfile, profileAnimal } = this.state;
+    const { user } = this.props.auth;
 
     const { animals, loading } = this.props.animals;
     const data = [];
@@ -124,24 +144,33 @@ class Animal extends Component {
                     {" "}
                     Perfil{" "}
                   </Button>,
-                  <Button type="primary" ghost icon="">
-                    {" "}
-                    Adoptame!{" "}
-                  </Button>,
                   <Button
-                    type="danger"
+                    type="primary"
                     ghost
-                    onClick={this.handleDeleteAnimal.bind(this, item)}
+                    icon="info-circle"
+                    onClick={this.handleAdopt.bind(this, item)}
                   >
                     {" "}
-                    Eliminar
-                  </Button>
+                    Adoptame{" "}
+                  </Button>,
+                  user.rol === "administrator" ? (
+                    <Button
+                      type="danger"
+                      ghost
+                      onClick={this.handleDeleteAnimal.bind(this, item)}
+                    >
+                      {" "}
+                      Eliminar
+                    </Button>
+                  ) : null
                 ]}
                 extra={
                   <img
                     alt="image_animal"
                     src={
-                      "http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
+                      item.image === null
+                        ? "http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
+                        : item.image
                     }
                     style={{ borderRadius: 8, height: 130, width: 200 }}
                   />
@@ -196,18 +225,21 @@ class Animal extends Component {
 
     return (
       <div className="animalList">
-        <div style={{ marginBottom: "50px" }}>
-          <Button
-            icon="form"
-            onClick={() =>
-              this.props.history.push("/dashboard/animal/register")
-            }
-          >
-            Crear Animal
-          </Button>
-        </div>
+        {this.props.auth.user.rol === "administrator" ? (
+          <div style={{ marginBottom: "50px" }}>
+            <Button
+              icon="form"
+              onClick={() =>
+                this.props.history.push("/dashboard/animal/register")
+              }
+            >
+              Crear Animal
+            </Button>
+          </div>
+        ) : null}
+
         <Divider orientation="left"> ** Lista de animales </Divider>
-        {animals.length ? content : "No hay datos para mostrar..."}
+        {animals.length ? content : "No hay animales disponibles para adoptar!"}
 
         {visibleProfile ? (
           <AnimalProfile sendToChild={this.carryToChild} data={profileAnimal} />
@@ -222,7 +254,8 @@ Animal.propTypes = {
   error: PropTypes.object.isRequired,
   animals: PropTypes.object.isRequired,
   getAnimals: PropTypes.func.isRequired,
-  deleteAnimal: PropTypes.func.isRequired
+  deleteAnimal: PropTypes.func.isRequired,
+  adoptAnimal: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -233,5 +266,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAnimals, deleteAnimal }
+  { getAnimals, deleteAnimal, adoptAnimal }
 )(Animal);

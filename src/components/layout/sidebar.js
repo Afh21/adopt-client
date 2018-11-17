@@ -74,12 +74,14 @@ class Sidebar extends Component {
                   </span>
                 }
               >
-                <Menu.Item key="1">
-                  <Link to={`${match.url}`}>
-                    <Icon type="dashboard" />
-                    <span>Dashboard</span>
-                  </Link>
-                </Menu.Item>
+                {user.rol === "administrator" ? (
+                  <Menu.Item key="1">
+                    <Link to={`${match.url}`}>
+                      <Icon type="dashboard" />
+                      <span>Dashboard</span>
+                    </Link>
+                  </Menu.Item>
+                ) : null}
 
                 <Menu.Item key="2">
                   <Link to={`${match.url}/user/profile`}>
@@ -111,65 +113,71 @@ class Sidebar extends Component {
                   </Link>
                 </Menu.Item>
 
-                <Menu.Item key="4">
-                  <Link to={`${match.url}/animal/register`}>
-                    <Icon type="switcher" theme="outlined" />
-                    <span>Registro</span>
-                  </Link>
-                </Menu.Item>
+                {user.rol === "administrator" ? (
+                  <Menu.Item key="4">
+                    <Link to={`${match.url}/animal/register`}>
+                      <Icon type="switcher" theme="outlined" />
+                      <span>Registro</span>
+                    </Link>
+                  </Menu.Item>
+                ) : null}
               </SubMenu>
 
-              <SubMenu
-                key="users"
-                title={
-                  <span>
-                    <Icon type="team" theme="outlined" />
-                    <span>Usuarios</span>
-                  </span>
-                }
-              >
-                <Menu.Item key="6">
-                  <Link to={`${match.url}/users`}>
-                    <Icon type="bars" />
-                    <span>Lista</span>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="7">
-                  <Link to={`${match.url}/user/register`}>
-                    <Icon type="user-add" theme="outlined" />
-                    <span>Registro</span>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="8">
-                  <Link to={`${match.url}/user/adoptions`}>
-                    <Icon type="audit" theme="outlined" />
-                    <span>Adopciones</span>
-                  </Link>
-                </Menu.Item>
-              </SubMenu>
+              {user.rol === "administrator" ? (
+                <SubMenu
+                  key="users"
+                  title={
+                    <span>
+                      <Icon type="team" theme="outlined" />
+                      <span>Usuarios</span>
+                    </span>
+                  }
+                >
+                  <Menu.Item key="6">
+                    <Link to={`${match.url}/users`}>
+                      <Icon type="bars" />
+                      <span>Lista</span>
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item key="7">
+                    <Link to={`${match.url}/user/register`}>
+                      <Icon type="user-add" theme="outlined" />
+                      <span>Registro</span>
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item key="8">
+                    <Link to={`${match.url}/user/adoptions`}>
+                      <Icon type="audit" theme="outlined" />
+                      <span>Adopciones</span>
+                    </Link>
+                  </Menu.Item>
+                </SubMenu>
+              ) : null}
 
-              <SubMenu
-                key="settings"
-                title={
-                  <span>
-                    <Icon type="setting" theme="outlined" />
-                    <span>Configuraciones</span>
-                  </span>
-                }
-              >
-                <Menu.Item key="10">
-                  <Link to={`${match.url}/master/type-rh`}>
-                    <Icon type="heart" theme="outlined" />
-                    <span>TIpo Rh</span>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="11">
-                  <Link to={`${match.url}/master/type-breed`}>
-                    <Icon type="tag" theme="outlined" />
-                    <span>Tipo Raza</span>
-                  </Link>
-                </Menu.Item>
-              </SubMenu>
+              {user.rol === "administrator" ? (
+                <SubMenu
+                  key="settings"
+                  title={
+                    <span>
+                      <Icon type="setting" theme="outlined" />
+                      <span>Configuraciones</span>
+                    </span>
+                  }
+                >
+                  <Menu.Item key="10">
+                    <Link to={`${match.url}/master/type-rh`}>
+                      <Icon type="heart" theme="outlined" />
+                      <span>TIpo Rh</span>
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item key="11">
+                    <Link to={`${match.url}/master/type-breed`}>
+                      <Icon type="tag" theme="outlined" />
+                      <span>Tipo Raza</span>
+                    </Link>
+                  </Menu.Item>
+                </SubMenu>
+              ) : null}
             </Menu>
           </Sider>
           <Layout>
@@ -185,7 +193,13 @@ class Sidebar extends Component {
               <Tag color="orange">
                 {user.name} {user.lastname}
               </Tag>
-              <Button type="danger" ghost onClick={this.onCloseSession}>
+              <Button
+                type="danger"
+                icon="logout"
+                ghost
+                onClick={this.onCloseSession}
+                style={{ float: "right", margin: 13 }}
+              >
                 Cerrar Sesión
               </Button>
             </Header>
