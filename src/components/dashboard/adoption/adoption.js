@@ -1,16 +1,30 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import Moment from "react-moment";
 import PropTypes from "prop-types";
 
 // Redux
 import { connect } from "react-redux";
 
 // Actions
-import { getAdoptions } from "../../../redux/actions/adoption";
+import {
+  getAdoptions,
+  acceptAdoption,
+  deleteAdoption
+} from "../../../redux/actions/adoption";
 
 // Css
-import { Table, Spin, Tag, Button } from "antd";
+import {
+  Table,
+  Spin,
+  Tag,
+  Button,
+  Tooltip,
+  Avatar,
+  Modal,
+  Divider
+} from "antd";
 const ButtonGroup = Button.Group;
+const confirm = Modal.confirm;
 
 class AdoptionList extends Component {
   constructor(props) {
@@ -25,11 +39,38 @@ class AdoptionList extends Component {
   } // End constructor
 
   // Function bind
-  handleApproveRequest = event => {};
+  handleApproveRequest = data => {
+    this.props.acceptAdoption(data.key);
+  };
 
   // Function bind
   handleRetWeet = e => {
-    console.log(e);
+    const { deleteAdoption } = this.props;
+    if (e.state.toString() !== "true") {
+      return Modal.info({
+        title: "Ups!",
+        content: (
+          <div>
+            <p>Primero debes aprovar las solicitudes de adopción</p>
+          </div>
+        ),
+        onOk() {}
+      });
+    }
+
+    // Reversar la adopcion.
+    confirm({
+      title: "Vas a reversar esta adopcion",
+      content:
+        "Una vez reprovada, el animal estará disponible para su adopcion nuevamente!",
+      okText: "Estoy de acuerdo!",
+      okType: "danger",
+      cancelText: "Cancelar!",
+      onOk() {
+        deleteAdoption(e.key);
+      },
+      onCancel() {}
+    });
   };
 
   // Lifecycle
@@ -45,11 +86,18 @@ class AdoptionList extends Component {
     let data = [];
     const columns = [
       {
-        title: "Nombres y apellidos",
-        dataIndex: "name"
+        title: "Avatar",
+        dataIndex: "avatar",
+        fixed: "left",
+        render: text => <Avatar shape="square" size={64} src={text} />
       },
       {
-        title: "Identificación",
+        title: "Nombres y apellidos",
+        dataIndex: "name",
+        fixed: "left"
+      },
+      {
+        title: "N° Identidad",
         dataIndex: "identity"
       },
       {
@@ -59,6 +107,15 @@ class AdoptionList extends Component {
       {
         title: "Correo electrónico",
         dataIndex: "email"
+      },
+      {
+        title: "Fecha solicitud",
+        dataIndex: "date",
+        render: text => (
+          <Tooltip placement="bottomLeft" title="Dia - Mes - Año">
+            <Moment date={text} format="DD-MM-YYYY" />{" "}
+          </Tooltip>
+        )
       },
       {
         title: "Rol",
@@ -84,12 +141,36 @@ class AdoptionList extends Component {
         sorter: (a, b) => a.rol.length - b.rol.length
       },
       {
+        title: "Nombre animal",
+        dataIndex: "animal",
+        render: text => <Tag size="large">{text}</Tag>
+      },
+      {
+        title: "Tipo de animal",
+        dataIndex: "type",
+        render: text => (text === "dog" ? <Tag>Perro</Tag> : <Tag>Gato</Tag>)
+      },
+      {
+        title: "Estado adopción",
+        dataIndex: "state",
+        render: text =>
+          text.toString() === "false" ? (
+            <Tag color="red"> Pendiente</Tag>
+          ) : (
+            <Tag color="green"> Aprovada </Tag>
+          )
+      },
+      {
         title: "Acciones",
         dataIndex: "actions",
+        fixed: "right",
         render: (text, record) => (
           <span>
             <ButtonGroup size="default">
-              <Button icon="check" onClick={this.handleApproveRequest}>
+              <Button
+                icon="check"
+                onClick={this.handleApproveRequest.bind(this, record)}
+              >
                 Aprovar
               </Button>
               <Button
@@ -110,11 +191,30 @@ class AdoptionList extends Component {
       adoptions.map(adoption => {
         data.push({
           key: adoption._id,
-          name: adoption.user.name
+          avatar: adoption.user.avatar,
+          name: adoption.user.name + " " + adoption.user.lastname,
+          identity: adoption.user.identity,
+          phone: adoption.user.phone,
+          email: adoption.user.email,
+          date: adoption.createdAt,
+          rol: adoption.user.rol,
+          animal: adoption.animal.name,
+          type: adoption.animal.animal,
+          state: adoption.confirmed
         });
 
-        return (content = <Table columns={columns} dataSource={data} />);
+        return (content = (
+          <Table columns={columns} dataSource={data} scroll={{ x: 1600 }} />
+        ));
       });
+    } else {
+      content = (
+        <div>
+          {" "}
+          <Divider orientation="left">Lista de Adopciones </Divider> No hay
+          solicitudes de adopcion generadas.{" "}
+        </div>
+      );
     }
 
     return <div>{content}</div>;
@@ -125,7 +225,9 @@ AdoptionList.propTypes = {
   auth: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired,
   adoptions: PropTypes.object.isRequired,
-  getAdoptions: PropTypes.func.isRequired
+  getAdoptions: PropTypes.func.isRequired,
+  acceptAdoption: PropTypes.func.isRequired,
+  deleteAdoption: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -136,5 +238,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAdoptions }
+  { getAdoptions, acceptAdoption, deleteAdoption }
 )(AdoptionList);

@@ -1,7 +1,7 @@
-import { GET_USERS, LOADING } from "../actions/types";
+import { GET_PROFILE, LOADING } from "../actions/types";
 
 const initialState = {
-  users: [],
+  adoptions: [],
   loading: false
 };
 
@@ -12,10 +12,10 @@ export default function(state = initialState, action) {
         ...state,
         loading: true
       };
-    case GET_USERS:
+    case GET_PROFILE:
       return {
         ...state,
-        users: action.payload,
+        adoptions: action.payload,
         loading: false
       };
     default:

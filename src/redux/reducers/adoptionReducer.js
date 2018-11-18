@@ -1,4 +1,4 @@
-import { GET_ADOPTIONS, LOADING } from "../actions/types";
+import { GET_ADOPTIONS, LOADING, GET_ID_ADOPTION } from "../actions/types";
 
 const initialState = {
   adoptions: [],
@@ -12,6 +12,13 @@ export default function(state = initialState, action) {
         ...state,
         adoptions: action.payload,
         loading: false
+      };
+    case GET_ID_ADOPTION:
+      return {
+        ...state,
+        adoptions: state.adoptions.filter(
+          adoption => adoption._id !== action.payload
+        )
       };
     case LOADING:
       return {

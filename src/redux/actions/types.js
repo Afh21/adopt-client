@@ -24,6 +24,10 @@ export const REGISTER_ADMINISTRATOR = "REGISTER_ADMINISTRATOR";
 
 // Adoptions
 export const GET_ADOPTIONS = "GET_ADOPTIONS";
+export const GET_ID_ADOPTION = "GET_ID_ADOPTION";
+
+// Profile
+export const GET_PROFILE = "GET_PROFILE";
 
 // Actions Globals
 export const LOADING = "LOADING";

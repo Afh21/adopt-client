@@ -15,6 +15,7 @@ import {
 import Animal from "../dashboard/animal/animal";
 import RegisterAnimal from "../dashboard/animal/animal-register";
 import Dashboard from "../dashboard/dashboard/dashboard";
+import Profile from "../dashboard/user/profile";
 import User from "../dashboard/user/user";
 import RegisterUser from "../dashboard/user/register";
 import Adoptions from "../dashboard/adoption/adoption";
@@ -214,6 +215,11 @@ class Sidebar extends Component {
             >
               <Switch>
                 <Route exact path={`${match.path}`} component={Dashboard} />
+                <Route
+                  exact
+                  path={`${match.path}user/profile`}
+                  component={Profile}
+                />
                 <Route exact path={`${match.path}animals`} component={Animal} />
                 <Route
                   exact

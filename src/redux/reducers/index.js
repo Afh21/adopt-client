@@ -14,6 +14,9 @@ import animalReducer from "./animalReducer";
 // Adoptions
 import adoptionReducer from "./adoptionReducer";
 
+// Profile
+import profileReducer from "./profileReducer";
+
 // Users
 import userReducer from "./userReducer";
 
@@ -24,5 +27,6 @@ export default combineReducers({
   rhs: typeRhReducer,
   animals: animalReducer,
   adoptions: adoptionReducer,
-  users: userReducer
+  users: userReducer,
+  profile: profileReducer
 });
