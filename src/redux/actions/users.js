@@ -62,13 +62,26 @@ export const deleteUserFromAdmin = id => dispatch => {
 export const getProfileAndAdoptions = id => dispatch => {
   dispatch(setLoading());
   axios
-    .get(`${URL}/master/users/profile/${id}`)
+    .get(`${URL}/master/users/profile/${id}/`)
     .then(res =>
       dispatch({
         type: GET_PROFILE,
         payload: res.data
       })
     )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Get profile
+export const updateProfile = (id, history) => dispatch => {
+  axios
+    .put(`${URL}/master/users/profile/${id}/edit`)
+    .then(() => dispatch(setLoading()))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

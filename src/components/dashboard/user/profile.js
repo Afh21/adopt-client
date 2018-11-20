@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 // Redux functions
 import { getProfileAndAdoptions } from "../../../redux/actions/profile";
 
+// Components
+import ProfileDetail from "./profileDetail";
+
 // Css
 import { Card, Avatar, Col, Row, Divider, Spin, Tooltip, Button } from "antd";
 const { Meta } = Card;
@@ -16,7 +19,8 @@ class Profile extends Component {
   };
 
   render() {
-    const { profile } = this.props;
+    const { profile, auth } = this.props;
+
     let content;
 
     if (profile.loading) {
@@ -68,9 +72,7 @@ class Profile extends Component {
               ]}
             >
               <Meta
-                avatar={
-                  <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                }
+                avatar={<Avatar src={`${auth.user.avatar}`} />}
                 title={adopt.animal.name}
               />
             </Card>
@@ -79,19 +81,18 @@ class Profile extends Component {
       });
     } else {
       content = (
-        <div>No haz hecho ningun solicitud de adopción, adopta ahora!</div>
+        <div>No haz hecho ninguna solicitud de adopción, adopta ahora!</div>
       );
     }
 
     return (
       <Row>
         <Col span={24}>
-          <Divider orientation="left">** Perfil </Divider>
+          <Divider orientation="left">PERFIL </Divider>
+          <ProfileDetail profile={auth.user} />
         </Col>
         <Col span={24}>
-          <Divider orientation="left">
-            ** Solicitudes de adopciones realizadas{" "}
-          </Divider>
+          <Divider orientation="right">SOLICITUDES DE ADOPCIÓN</Divider>
           {content}
         </Col>
       </Row>
