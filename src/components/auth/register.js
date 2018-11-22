@@ -144,7 +144,26 @@ class Register extends Component {
                     <Icon type="idcard" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   placeholder="Número de identificación"
-                  // onInput={this.handleEvaluateIdentity.bind(this)}
+                />
+              )}
+            </FormItem>
+            <FormItem label="Dirección residencia">
+              {getFieldDecorator("address", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Por favor ingrese tu número de identificación."
+                  }
+                ]
+              })(
+                <Input
+                  prefix={
+                    <Icon
+                      type="interation"
+                      style={{ color: "rgba(0,0,0,.25)" }}
+                    />
+                  }
+                  placeholder="Ej. CL x # xx - xx "
                 />
               )}
             </FormItem>

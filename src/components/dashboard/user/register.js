@@ -9,6 +9,7 @@ import { createUserFromAdmin } from "../../../redux/actions/users";
 // Design
 import { Form, Input, Select, Button, Divider, Icon } from "antd";
 import "./../../../components/dashboard/animal/animal.css";
+import "../../../components/auth/auth.css";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -108,6 +109,7 @@ class RegisterAdmin extends Component {
     const name = isFieldTouched("name") && getFieldError("name");
     const lastname = isFieldTouched("lastname") && getFieldError("lastname");
     const identity = isFieldTouched("identity") && getFieldError("identity");
+    const address = isFieldTouched("address") && getFieldError("address");
     const email = isFieldTouched("email") && getFieldError("email");
     const password = isFieldTouched("password") && getFieldError("password");
     const password2 = isFieldTouched("password2") && getFieldError("password2");
@@ -188,6 +190,27 @@ class RegisterAdmin extends Component {
                   <Icon type="idcard" style={{ color: "rgba(0,0,0,.25)" }} />
                 }
                 placeholder="Número de identificación"
+              />
+            )}
+          </FormItem>
+          <FormItem
+            label="Dirección residencia"
+            validateStatus={address ? "error" : ""}
+            help={address || ""}
+          >
+            {getFieldDecorator("address", {
+              rules: [
+                {
+                  required: true,
+                  message: "Por favor ingresa tu dirección de residencia."
+                }
+              ]
+            })(
+              <Input
+                prefix={
+                  <Icon type="solution" style={{ color: "rgba(0,0,0,.25)" }} />
+                }
+                placeholder="Dirección de residencia"
               />
             )}
           </FormItem>

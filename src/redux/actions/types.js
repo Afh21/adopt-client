@@ -26,6 +26,9 @@ export const REGISTER_ADMINISTRATOR = "REGISTER_ADMINISTRATOR";
 export const GET_ADOPTIONS = "GET_ADOPTIONS";
 export const GET_ID_ADOPTION = "GET_ID_ADOPTION";
 
+// Dashboard
+export const DATA_DASHBOARD = "DATA_DASHBOARD";
+
 // Profile
 export const GET_PROFILE = "GET_PROFILE";
 

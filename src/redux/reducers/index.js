@@ -20,8 +20,12 @@ import profileReducer from "./profileReducer";
 // Users
 import userReducer from "./userReducer";
 
+// Dashboard
+import dashboardReducer from "./dashboardReducer";
+
 export default combineReducers({
   auth: authReducer,
+  dashboard: dashboardReducer,
   error: errorReducer,
   breeds: typeBreedReducer,
   rhs: typeRhReducer,

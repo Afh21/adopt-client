@@ -58,11 +58,11 @@ class ProfileDetail extends Component {
   };
 
   handleSubmit = e => {
-    const { updateProfile, auth, history } = this.props;
+    const { updateProfile, auth } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        updateProfile(auth.user.id, history);
+        updateProfile(auth.user.id, values, this.props.history);
       }
     });
   };
@@ -188,7 +188,7 @@ class ProfileDetail extends Component {
               <FormItem {...formItemLayout} label="Dirección residencia">
                 {getFieldDecorator("address", {
                   initialValue: profile.address
-                })(<Input />)}
+                })(<Input disabled />)}
               </FormItem>
               <FormItem {...formItemLayout} label="Teléfono">
                 {getFieldDecorator("phone", {

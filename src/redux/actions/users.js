@@ -78,14 +78,14 @@ export const getProfileAndAdoptions = id => dispatch => {
 };
 
 // Get profile
-export const updateProfile = (id, history) => dispatch => {
+export const updateProfile = (id, values, history) => dispatch => {
   axios
-    .put(`${URL}/master/users/profile/${id}/edit`)
-    .then(() => dispatch(setLoading()))
-    .catch(err =>
+    .put(`${URL}/master/users/update/profile/${id}`, values)
+    .then(() => history.push("/dashboard/animals"))
+    .catch(() =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: {}
       })
     );
 };

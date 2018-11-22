@@ -101,7 +101,11 @@ class User extends Component {
                 className={`${
                   record.key === this.props.auth.user.id ? "disabled" : null
                 }`}
-                onClick={this.handleDeleteUser.bind(this, record)}
+                onClick={
+                  record.key === this.props.auth.user.id
+                    ? null
+                    : this.handleDeleteUser.bind(this, record)
+                }
               >
                 Eliminar
               </Button>
