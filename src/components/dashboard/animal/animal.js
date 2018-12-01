@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+import { Link } from "react-router-dom";
+
 // Css
 import {
   List,
@@ -38,6 +40,7 @@ class Animal extends Component {
 
     // Bind function to handleProfile
     this.handleProfile = this.handleProfile.bind(this);
+    this.handleEditAnimal = this.handleEditAnimal.bind(this);
     this.handleDeleteAnimal = this.handleDeleteAnimal.bind(this);
     this.handleAdopt = this.handleAdopt.bind(this);
   }
@@ -56,6 +59,18 @@ class Animal extends Component {
       visibleProfile: bool,
       profileAnimal: profile
     });
+  };
+
+  // Send info to child component
+  carryToChildEdit = (bool, profile) => {
+    this.setState({
+      visibleProfileEdit: bool,
+      editProfile: profile
+    });
+  };
+
+  handleEditAnimal = e => {
+    this.setState({ visibleProfileEdit: true, editProfile: e });
   };
 
   handleDeleteAnimal = e => {
@@ -95,6 +110,7 @@ class Animal extends Component {
 
   render() {
     const { visibleProfile, profileAnimal } = this.state;
+
     const { user } = this.props.auth;
 
     const { animals, loading } = this.props.animals;
@@ -102,7 +118,7 @@ class Animal extends Component {
     let content;
 
     if (loading) {
-      content = <Spin size="large" />;
+      return (content = <Spin />);
     } else if (animals.length > 0) {
       animals.map(animal => {
         data.push({
@@ -125,7 +141,7 @@ class Animal extends Component {
         return (content = (
           <List
             itemLayout="vertical"
-            size="large"
+            style={{ width: 800 }}
             pagination={{
               onChange: page => {
                 console.log(page);
@@ -158,10 +174,23 @@ class Animal extends Component {
                       type="danger"
                       ghost
                       onClick={this.handleDeleteAnimal.bind(this, item)}
+                      icon="delete"
                     >
                       {" "}
                       Eliminar
                     </Button>
+                  ) : null,
+                  user.rol === "administrator" ? (
+                    <Link to={`animal/edit/${item.id}`}>
+                      <Button
+                        type="default"
+                        onClick={this.handleEditAnimal.bind(this, item)}
+                        icon="edit"
+                      >
+                        {" "}
+                        Editar
+                      </Button>
+                    </Link>
                   ) : null
                 ]}
                 extra={

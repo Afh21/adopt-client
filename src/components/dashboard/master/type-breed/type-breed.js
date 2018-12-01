@@ -10,6 +10,7 @@ import {
 
 // Components
 import TypeBreedCreate from "./type-breed-create";
+import TypeBreedEdit from "./type-breed-edit";
 
 // Antd & Styles
 import { Table, Divider, Button, Modal, Spin } from "antd";
@@ -24,7 +25,9 @@ class Breed extends Component {
     this.state = {
       pagination: false,
       visible: false,
-      visibleChild: true
+      visibleChild: true,
+      visibleEditModal: false,
+      dataForEditBreed: {}
     };
 
     this.handleEditBreed = this.handleEditBreed.bind(this);
@@ -38,7 +41,11 @@ class Breed extends Component {
 
   // Function edit breed.
   handleEditBreed = e => {
-    console.log("Edit breed: ", e.key);
+    this.setState({ visibleEditModal: true, dataForEditBreed: e });
+  };
+
+  carryToChildEdit = (bool, object) => {
+    this.setState({ visibleEditModal: bool, dataForEditBreed: object });
   };
 
   // Function delete breed
@@ -135,6 +142,12 @@ class Breed extends Component {
         </Button>
         {state.visible ? (
           <TypeBreedCreate communicateToChild={this.carryToChild} />
+        ) : null}
+        {state.visibleEditModal ? (
+          <TypeBreedEdit
+            data={state.dataForEditBreed}
+            communicateToChildEdit={this.carryToChildEdit}
+          />
         ) : null}
         <div className="tableBreed">{table}</div>
       </div>

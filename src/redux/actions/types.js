@@ -17,6 +17,7 @@ export const GET_TYPES_BREED = "GET_TYPES_BREED";
 // Actions Animals
 export const GET_ANIMALS = "GET_ANIMALS";
 export const ADOPT_ANIMAL = "ADOPT_ANIMAL";
+export const GET_PROFILE_ANIMAL = "GET_PROFILE_ANIMAL";
 
 // Actions Register Admin
 export const GET_USERS = "GET_USERS";

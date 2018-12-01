@@ -1,83 +1,56 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import moment from "moment";
 
-// Redux
-import { savedAnimal } from "../../../redux/actions/animals";
+import { updateAnimal, getProfileAnimal } from "../../../redux/actions/animals";
 import {
   getAllTypeBreeds,
   getAllTypeRhs
 } from "../../../redux/actions/settings/typeAction";
 
-// Css
 import { Form, Icon, Input, Button, Select, DatePicker, Divider } from "antd";
 import "./animal.css";
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-class RegisterAnimal extends Component {
-  // Form.create
-  hasErrors = fieldsError => {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
+class AnimalEdit extends Component {
+  componentDidMount = () => {
+    this.props.getProfileAnimal(this.props.match.params.animalId);
+
+    this.props.getAllTypeBreeds();
+    this.props.getAllTypeRhs();
   };
 
-  // Lifecycle react
-  componentDidMount() {
-    const { getAllTypeBreeds, getAllTypeRhs } = this.props;
+  handleCancel = () => {
+    this.props.history.goBack();
+  };
 
-    // To disabled submit button at the beginning.
-    this.props.form.validateFields();
-
-    // Actions redux
-    getAllTypeBreeds();
-    getAllTypeRhs();
-  }
-
-  // Send info
   handleSubmit = e => {
+    const { updateAnimal } = this.props;
     e.preventDefault();
+
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // Redux function
-        this.props.savedAnimal(values, this.props.history);
+        values.born = values.born._d;
+        updateAnimal(this.props.animals.animal._id, values, this.props.history);
       }
     });
   };
 
   render() {
-    // Form.create()
-    const {
-      getFieldDecorator,
-      getFieldsError,
-      getFieldError,
-      isFieldTouched
-    } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
-    // Redux props
-    const { breeds, rhs } = this.props;
-
-    // Only show error after a field is touched.
-    const name = isFieldTouched("name") && getFieldError("name");
-    const animal = isFieldTouched("animal") && getFieldError("animal");
-    const rh = isFieldTouched("rh") && getFieldError("rh");
-    const breed = isFieldTouched("breed") && getFieldError("breed");
-    const genre = isFieldTouched("genre") && getFieldError("genre");
-    const color = isFieldTouched("color") && getFieldError("color");
-    const height = isFieldTouched("height") && getFieldError("height");
-    const weight = isFieldTouched("weight") && getFieldError("weight");
-    const born = isFieldTouched("born") && getFieldError("born");
-    const state = isFieldTouched("state") && getFieldError("state");
+    const { breeds, rhs, animals } = this.props;
 
     return (
       <div className="animalRegister">
         <Form layout="horizontal" onSubmit={this.handleSubmit}>
-          <Divider orientation="left">** Registrar animal</Divider>
-          <FormItem
-            label="Nombre del animal"
-            validateStatus={name ? "error" : ""}
-            help={name || ""}
-          >
+          <Divider orientation="left">** Actualizar animal</Divider>
+          <FormItem label="Nombre del animal">
             {getFieldDecorator("name", {
+              initialValue: animals.animal.name,
               rules: [
                 {
                   required: true,
@@ -94,12 +67,9 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Animal"
-            validateStatus={animal ? "error" : ""}
-            help={animal || ""}
-          >
+          <FormItem label="Animal">
             {getFieldDecorator("animal", {
+              initialValue: animals.animal.animal,
               rules: [
                 {
                   required: true,
@@ -114,12 +84,9 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Rh"
-            validateStatus={rh ? "error" : ""}
-            help={rh || ""}
-          >
+          <FormItem label="Rh">
             {getFieldDecorator("rh", {
+              initialValue: animals.animal.rh,
               rules: [
                 {
                   required: true,
@@ -139,12 +106,9 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Raza"
-            validateStatus={breed ? "error" : ""}
-            help={breed || ""}
-          >
+          <FormItem label="Raza">
             {getFieldDecorator("breed", {
+              initialValue: animals.animal.breed,
               rules: [
                 {
                   required: true,
@@ -164,12 +128,9 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Género"
-            validateStatus={genre ? "error" : ""}
-            help={genre || ""}
-          >
+          <FormItem label="Género">
             {getFieldDecorator("genre", {
+              initialValue: animals.animal.genre,
               rules: [
                 {
                   required: true,
@@ -184,12 +145,9 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Color"
-            validateStatus={color ? "error" : ""}
-            help={color || ""}
-          >
+          <FormItem label="Color">
             {getFieldDecorator("color", {
+              initialValue: animals.animal.color,
               rules: [
                 {
                   required: true,
@@ -206,12 +164,9 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Altura del animal"
-            validateStatus={height ? "error" : ""}
-            help={height || ""}
-          >
+          <FormItem label="Altura del animal">
             {getFieldDecorator("height", {
+              initialValue: animals.animal.height,
               rules: [
                 {
                   required: true,
@@ -232,12 +187,9 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Peso del animal"
-            validateStatus={weight ? "error" : ""}
-            help={weight || ""}
-          >
+          <FormItem label="Peso del animal">
             {getFieldDecorator("weight", {
+              initialValue: animals.animal.weight,
               rules: [
                 {
                   required: true,
@@ -258,27 +210,26 @@ class RegisterAnimal extends Component {
             )}
           </FormItem>
 
-          <FormItem
-            label="Fecha de nacimiento"
-            validateStatus={born ? "error" : ""}
-            help={born || ""}
-          >
+          <FormItem label="Fecha de nacimiento">
             {getFieldDecorator("born", {
+              initialValue: moment(animals.animal.born, "YYYY/MM/DD"),
               rules: [
                 {
                   required: true,
                   message: "Por favor ingrese el peso del animal."
                 }
               ]
-            })(<DatePicker />)}
+            })(
+              <DatePicker
+              // defaultValue={moment(animals.animal.born, "YYYY-MM-DD")}
+              // format={"YYYY/MM/DD"}
+              />
+            )}
           </FormItem>
 
-          <FormItem
-            label="Estado "
-            validateStatus={state ? "error" : ""}
-            help={state || ""}
-          >
+          <FormItem label="Estado ">
             {getFieldDecorator("state", {
+              initialValue: animals.animal.state,
               rules: [
                 {
                   required: true,
@@ -296,13 +247,12 @@ class RegisterAnimal extends Component {
           <Divider> </Divider>
 
           <FormItem>
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={this.hasErrors(getFieldsError())}
-              icon="form"
-            >
-              Registrar
+            <Button type="primary" htmlType="submit" icon="edit">
+              Actualizar
+            </Button>
+            &nbsp; &nbsp;
+            <Button icon="arrow-left" onClick={this.handleCancel}>
+              Cancelar
             </Button>
           </FormItem>
         </Form>
@@ -311,15 +261,16 @@ class RegisterAnimal extends Component {
   }
 }
 
-RegisterAnimal.propTypes = {
-  getAllTypeBreeds: PropTypes.func.isRequired,
-  getAllTypeRhs: PropTypes.func.isRequired,
-  savedAnimal: PropTypes.func.isRequired,
-  animals: PropTypes.object.isRequired,
-  breeds: PropTypes.object.isRequired,
-  rhs: PropTypes.object.isRequired,
-  auth: PropTypes.object,
-  error: PropTypes.object.isRequired
+AnimalEdit.propTypes = {
+  getAllTypeBreeds: PropTypes.func.isRequired, // Redux
+  getAllTypeRhs: PropTypes.func.isRequired, // Redux
+  getProfileAnimal: PropTypes.func.isRequired, // Redux
+  updateAnimal: PropTypes.func.isRequired, // Redux
+  breeds: PropTypes.object.isRequired, // Redux
+  rhs: PropTypes.object.isRequired, // Redux
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired,
+  animals: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -332,5 +283,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAllTypeBreeds, getAllTypeRhs, savedAnimal }
-)(Form.create()(RegisterAnimal));
+  { getAllTypeBreeds, getAllTypeRhs, updateAnimal, getProfileAnimal }
+)(Form.create()(AnimalEdit));

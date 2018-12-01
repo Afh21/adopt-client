@@ -11,6 +11,8 @@ import {
 // Components
 import TypeRhCreate from "./type-rh-create";
 
+import TypeRhEdit from "./type-rh-edit";
+
 // Css
 import { Divider, Button, Table, Spin, Modal } from "antd";
 import "../types.css";
@@ -23,9 +25,12 @@ class TypeRh extends Component {
 
     this.state = {
       formCreate: false,
-      pagination: false
+      pagination: false,
+      visibleEditModal: false,
+      dataForEditBreed: {}
     };
 
+    this.handleEditRh = this.handleEditRh.bind(this);
     this.handleDeleteRh = this.handleDeleteRh.bind(this);
   }
 
@@ -37,7 +42,9 @@ class TypeRh extends Component {
     this.setState({ formCreate: !this.state.formCreate });
   };
 
-  handleEditRh = e => {};
+  handleEditRh = e => {
+    this.setState({ visibleEditModal: true, dataForEditBreed: e });
+  };
 
   handleDeleteRh = e => {
     const { deleteTypeRH } = this.props;
@@ -54,6 +61,10 @@ class TypeRh extends Component {
       },
       onCancel() {}
     });
+  };
+
+  carryToChildEdit = (bool, object) => {
+    this.setState({ visibleEditModal: bool, dataForEditBreed: object });
   };
 
   carryToChild = bool => {
@@ -125,6 +136,12 @@ class TypeRh extends Component {
         <br /> <br />
         {formCreate ? (
           <TypeRhCreate communicateToChild={this.carryToChild} />
+        ) : null}
+        {state.visibleEditModal ? (
+          <TypeRhEdit
+            data={state.dataForEditBreed}
+            communicateToChildEdit={this.carryToChildEdit}
+          />
         ) : null}
         <div className="tableBreed">{table}</div>
       </div>

@@ -22,10 +22,10 @@ class Dashboard extends Component {
             <Row>
               <Col span={12}>
                 {" "}
-                <Icon type="team" style={{ fontSize: "2.5em" }} />
+                <Icon type="team" style={{ fontSize: "1.5em" }} />
               </Col>
               <Col span={12}>
-                <p style={{ marginLeft: 25, fontSize: 30, fontWeight: "bold" }}>
+                <p style={{ marginLeft: 25, fontSize: 20, fontWeight: "bold" }}>
                   {dashboard.users}
                 </p>
               </Col>
@@ -40,10 +40,10 @@ class Dashboard extends Component {
             <Row>
               <Col span={12}>
                 {" "}
-                <Icon type="home" style={{ fontSize: "2.5em" }} />
+                <Icon type="home" style={{ fontSize: "1.5em" }} />
               </Col>
               <Col span={12}>
-                <p style={{ marginLeft: 25, fontSize: 30, fontWeight: "bold" }}>
+                <p style={{ marginLeft: 25, fontSize: 20, fontWeight: "bold" }}>
                   {dashboard.animals}
                 </p>
               </Col>
@@ -58,7 +58,7 @@ class Dashboard extends Component {
             <Row>
               <Col span={12}>
                 {" "}
-                <Icon type="share-alt" style={{ fontSize: "2.5em" }} />
+                <Icon type="share-alt" style={{ fontSize: "1.5em" }} />
               </Col>
               <Col span={12}>
                 <p>
@@ -66,15 +66,15 @@ class Dashboard extends Component {
                     dashboard.adoptions
                   ) : (
                     <Tooltip placement="bottom" title="No hay ninguna adopción">
-                      <p
+                      <span
                         style={{
                           marginLeft: 25,
-                          fontSize: 30,
+                          fontSize: 20,
                           fontWeight: "bold"
                         }}
                       >
                         0
-                      </p>
+                      </span>
                     </Tooltip>
                   )}{" "}
                 </p>

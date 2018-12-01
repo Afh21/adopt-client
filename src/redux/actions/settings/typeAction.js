@@ -48,6 +48,18 @@ export const savedTypeBreed = data => dispatch => {
     );
 };
 
+export const updateBreed = (id, values) => dispatch => {
+  axios
+    .put(`${URL}/master/detail/breed/type-breed/${id}`, values)
+    .then(() => dispatch(getAllTypeBreeds()))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
 export const deleteTypeBreed = id => dispatch => {
   axios
     .delete(`${URL}/master/detail/breed/type-breed/${id}`)
@@ -90,6 +102,18 @@ export const savedTypeRh = data => dispatch => {
         payload: res.data.data
       })
     )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
+export const updateRh = (id, values) => dispatch => {
+  axios
+    .put(`${URL}/master/detail/rh/type-rh/${id}`, values)
+    .then(() => dispatch(getAllTypeRhs()))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

@@ -10,6 +10,8 @@ import {
 // Redux
 import { connect } from "react-redux";
 
+import UserEdit from "./user-edit";
+
 // Css
 import { Table, Button, Tag, Spin, Modal } from "antd";
 const ButtonGroup = Button.Group;
@@ -19,6 +21,12 @@ class User extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      visibleEditProfile: false,
+      objectUserUpdate: {}
+    };
+
+    this.handleEditUser = this.handleEditUser.bind(this);
     this.handleDeleteUser = this.handleDeleteUser.bind(this);
   }
 
@@ -37,6 +45,17 @@ class User extends Component {
     });
   };
 
+  handleEditUser = user => {
+    this.setState({
+      visibleEditProfile: true,
+      objectUserUpdate: user
+    });
+  };
+
+  carryToChildEdit = (bool, object) => {
+    this.setState({ visibleEditProfile: bool, objectUserUpdate: object });
+  };
+
   componentDidMount = () => {
     // Redux - actions
     this.props.getUsersFromAdmin();
@@ -45,6 +64,7 @@ class User extends Component {
   render() {
     // Users - redux
     const { users, loading } = this.props.users;
+    const state = this.state;
 
     const columns = [
       {
@@ -92,7 +112,10 @@ class User extends Component {
         render: (text, record) => (
           <span>
             <ButtonGroup size="default">
-              <Button icon="edit" onClick={() => console.log(record)}>
+              <Button
+                icon="edit"
+                onClick={this.handleEditUser.bind(this, record)}
+              >
                 Editar
               </Button>
 
@@ -124,10 +147,13 @@ class User extends Component {
       users.data.map(user => {
         dataArray.push({
           key: user._id,
-          name: `${user.name} ${user.lastname}`,
+          name: user.name,
+          lastname: user.lastname,
           identity: user.identity,
           phone: user.phone,
+          address: user.address,
           email: user.email,
+          birthday: user.birthday,
           rol: user.rol
         });
         return (content = <Table columns={columns} dataSource={dataArray} />);
@@ -144,6 +170,12 @@ class User extends Component {
           Crear administrador !{" "}
         </Button>
         {content}
+        {state.visibleEditProfile ? (
+          <UserEdit
+            profile={state.objectUserUpdate}
+            communicateToChildEdit={this.carryToChildEdit}
+          />
+        ) : null}
       </div>
     );
   }

@@ -90,6 +90,18 @@ export const updateProfile = (id, values, history) => dispatch => {
     );
 };
 
+export const updateProfileFromAdmin = (id, values, history) => dispatch => {
+  axios
+    .put(`${URL}/master/users/update/profile/${id}`, values)
+    .then(() => dispatch(getUsersFromAdmin()))
+    .catch(() =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: {}
+      })
+    );
+};
+
 export const setLoading = () => {
   return {
     type: LOADING
