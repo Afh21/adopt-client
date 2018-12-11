@@ -27,3 +27,9 @@ ul.profile > li {
   padding: 5px;
   list-style: none;
 }
+
+.img-list {
+  border-radius: 8px;
+  width: 170px;
+  height: 120px;
+}

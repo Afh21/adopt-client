@@ -21,11 +21,13 @@ import { connect } from "react-redux";
 import {
   getAnimals,
   deleteAnimal,
-  adoptAnimal
+  adoptAnimal,
+  getListAnimalsAdoptedAndPending
 } from "../../../redux/actions/animals";
 
 import "./animal.css";
 import AnimalProfile from "./animal-profile";
+import AnimalPendingAdopted from "./animal-pending-adopted";
 
 const confirm = Modal.confirm;
 
@@ -35,12 +37,13 @@ class Animal extends Component {
 
     this.state = {
       visibleProfile: false,
-      profileAnimal: {}
+      modalListAnimals: false,
+      profileAnimal: {},
+      listAnimalsAdoptedAndPending: []
     };
 
     // Bind function to handleProfile
     this.handleProfile = this.handleProfile.bind(this);
-    this.handleEditAnimal = this.handleEditAnimal.bind(this);
     this.handleDeleteAnimal = this.handleDeleteAnimal.bind(this);
     this.handleAdopt = this.handleAdopt.bind(this);
   }
@@ -62,15 +65,10 @@ class Animal extends Component {
   };
 
   // Send info to child component
-  carryToChildEdit = (bool, profile) => {
+  carryToChildList = bool => {
     this.setState({
-      visibleProfileEdit: bool,
-      editProfile: profile
+      modalListAnimals: bool
     });
-  };
-
-  handleEditAnimal = e => {
-    this.setState({ visibleProfileEdit: true, editProfile: e });
   };
 
   handleDeleteAnimal = e => {
@@ -106,11 +104,23 @@ class Animal extends Component {
   componentDidMount = () => {
     // Redux function
     this.props.getAnimals();
+    this.props.getListAnimalsAdoptedAndPending();
+  };
+
+  handleAnimalsAdoptedAndPending = () => {
+    this.setState({
+      modalListAnimals: true,
+      listAnimalsAdoptedAndPending: this.props.animals.listAnimals
+    });
   };
 
   render() {
-    const { visibleProfile, profileAnimal } = this.state;
-
+    const {
+      visibleProfile,
+      profileAnimal,
+      modalListAnimals,
+      listAnimalsAdoptedAndPending
+    } = this.state;
     const { user } = this.props.auth;
 
     const { animals, loading } = this.props.animals;
@@ -118,7 +128,7 @@ class Animal extends Component {
     let content;
 
     if (loading) {
-      return (content = <Spin />);
+      content = <Spin />;
     } else if (animals.length > 0) {
       animals.map(animal => {
         data.push({
@@ -182,11 +192,7 @@ class Animal extends Component {
                   ) : null,
                   user.rol === "administrator" ? (
                     <Link to={`animal/edit/${item.id}`}>
-                      <Button
-                        type="default"
-                        onClick={this.handleEditAnimal.bind(this, item)}
-                        icon="edit"
-                      >
+                      <Button type="default" icon="edit">
                         {" "}
                         Editar
                       </Button>
@@ -228,7 +234,7 @@ class Animal extends Component {
                       <Icon type="man" />
                     ) : (
                       <Icon type="woman" />
-                    )}{" "}
+                    )}
                   </Tag>
                 </Tooltip>
 
@@ -250,28 +256,47 @@ class Animal extends Component {
           />
         ));
       });
+    } else {
+      content = "No hay animales disponibles para adoptar";
     }
 
     return (
       <div className="animalList">
         {this.props.auth.user.rol === "administrator" ? (
-          <div style={{ marginBottom: "50px" }}>
-            <Button
-              icon="form"
-              onClick={() =>
-                this.props.history.push("/dashboard/animal/register")
-              }
-            >
-              Crear Animal
-            </Button>
-          </div>
+          <React.Fragment>
+            <div style={{ marginBottom: "50px" }}>
+              <Button
+                icon="form"
+                onClick={() =>
+                  this.props.history.push("/dashboard/animal/register")
+                }
+              >
+                Crear Animal
+              </Button>
+
+              <Button
+                icon="bars"
+                style={{ float: "right" }}
+                onClick={this.handleAnimalsAdoptedAndPending}
+              >
+                Pendientes - Adoptados
+              </Button>
+            </div>
+          </React.Fragment>
         ) : null}
 
         <Divider orientation="left"> ** Lista de animales </Divider>
-        {animals.length ? content : "No hay animales disponibles para adoptar!"}
+        {content}
 
         {visibleProfile ? (
           <AnimalProfile sendToChild={this.carryToChild} data={profileAnimal} />
+        ) : null}
+
+        {modalListAnimals ? (
+          <AnimalPendingAdopted
+            data={listAnimalsAdoptedAndPending}
+            sendToChildList={this.carryToChildList}
+          />
         ) : null}
       </div>
     );
@@ -283,6 +308,7 @@ Animal.propTypes = {
   error: PropTypes.object.isRequired,
   animals: PropTypes.object.isRequired,
   getAnimals: PropTypes.func.isRequired,
+  getListAnimalsAdoptedAndPending: PropTypes.func.isRequired,
   deleteAnimal: PropTypes.func.isRequired,
   adoptAnimal: PropTypes.func.isRequired
 };
@@ -295,5 +321,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAnimals, deleteAnimal, adoptAnimal }
+  { getAnimals, deleteAnimal, adoptAnimal, getListAnimalsAdoptedAndPending }
 )(Animal);

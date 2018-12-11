@@ -19,8 +19,11 @@ import {
   Card,
   Switch,
   Modal,
-  Divider
+  Divider,
+  Upload,
+  message
 } from "antd";
+import reqwest from "reqwest";
 
 const FormItem = Form.Item;
 const { Meta } = Card;
@@ -34,9 +37,49 @@ class UserEdit extends Component {
       visibleTooltipPassword: true,
       visibleChangePassword: false,
       confirmDirty: false,
-      validPassword: false
+      validPassword: false,
+      visibleBottonForUpdateImage: false,
+
+      fileList: [],
+      uploading: false
     };
   }
+
+  // Upload Image
+  handleUpload = () => {
+    const { fileList } = this.state;
+    const formData = new FormData();
+
+    fileList.forEach(file => {
+      formData.append("files[]", file);
+    });
+
+    this.setState({
+      uploading: true
+    });
+
+    // You can use any AJAX library you like
+    reqwest({
+      url: `http://localhost:5000/master/animal/update/photo/${
+        this.props.profile.key
+      }`,
+      method: "post",
+      data: formData,
+      success: () => {
+        this.setState({
+          fileList: [],
+          uploading: false
+        });
+        message.success("upload successfully.");
+      },
+      error: () => {
+        this.setState({
+          uploading: false
+        });
+        message.error("upload failed.");
+      }
+    });
+  };
 
   hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -44,7 +87,10 @@ class UserEdit extends Component {
 
   // Switch to change the photo perfil
   onChange = () => {
-    this.setState({ visibleTooltip: !this.state.visibleTooltip });
+    this.setState({
+      visibleTooltip: !this.state.visibleTooltip,
+      visibleBottonForUpdateImage: !this.state.visibleBottonForUpdateImage
+    });
   };
 
   // Switch to change the password Input's
@@ -107,6 +153,7 @@ class UserEdit extends Component {
     this.props.communicateToChildEdit(false, {});
   };
 
+  // ================= RENDER ============================
   render() {
     const {
       getFieldDecorator,
@@ -120,6 +167,28 @@ class UserEdit extends Component {
       isFieldTouched("password2") && getFieldError("password2");
 
     const state = this.state;
+    const { uploading, fileList } = this.state; // Para la carga de imagenes
+
+    const props = {
+      onRemove: file => {
+        this.setState(state => {
+          const index = state.fileList.indexOf(file);
+          const newFileList = state.fileList.slice();
+          newFileList.splice(index, 1);
+          return {
+            fileList: newFileList
+          };
+        });
+      },
+      beforeUpload: file => {
+        this.setState(state => ({
+          fileList: [...state.fileList, file]
+        }));
+        return false;
+      },
+      fileList
+    };
+
     const { profile } = this.props;
 
     const formItemLayout = {
@@ -175,6 +244,30 @@ class UserEdit extends Component {
               >
                 <Meta title={`${profile.name + " " + profile.lastname}  `} />
               </Card>
+
+              {/* ========================== CARGA DE IMAGENES ====================== */}
+
+              {state.visibleBottonForUpdateImage ? (
+                <React.Fragment>
+                  <Upload {...props}>
+                    <Button>
+                      <Icon type="upload" /> Select File
+                    </Button>
+                  </Upload>
+
+                  <Button
+                    type="primary"
+                    onClick={this.handleUpload}
+                    disabled={fileList.length === 0}
+                    loading={uploading}
+                    style={{ marginTop: 16 }}
+                  >
+                    {uploading ? "Uploading" : "Start Upload"}
+                  </Button>
+                </React.Fragment>
+              ) : null}
+
+              {/* ========================== CARGA DE IMAGENES ====================== */}
             </Col>
             <br />
             {/* =========================================  PROFILE ==========================================0 */}

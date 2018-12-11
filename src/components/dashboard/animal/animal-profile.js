@@ -18,7 +18,6 @@ class AnimalProfile extends Component {
 
   render() {
     const { data } = this.props;
-    console.log(data);
     return (
       <div>
         <Modal
@@ -30,14 +29,14 @@ class AnimalProfile extends Component {
         >
           <Row>
             <Col span={12}>
-              <div style={{ borderStyle: "dashed" }}>
+              <div>
                 {data.image === null ? (
                   <img
                     alt="image_animal"
                     src={
                       "http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
                     }
-                    style={{ borderRadius: 8, height: 190, width: 270 }}
+                    style={{ borderRadius: 8, height: 190, width: 280 }}
                   />
                 ) : null}
               </div>

@@ -4,7 +4,8 @@ import {
   GET_ERRORS,
   CLEAR_ERRORS,
   ADOPT_ANIMAL,
-  GET_PROFILE_ANIMAL
+  GET_PROFILE_ANIMAL,
+  GET_LISTS_ANIMALS_ADOPTED_PENDING
 } from "./types";
 import { URL } from "../../utilities/config";
 import axios from "axios";
@@ -61,6 +62,23 @@ export const getProfileAnimal = id => dispatch => {
     .then(res =>
       dispatch({
         type: GET_PROFILE_ANIMAL,
+        payload: res.data.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
+export const getListAnimalsAdoptedAndPending = () => dispatch => {
+  axios
+    .get(`${URL}/master/animal/other/animals`)
+    .then(res =>
+      dispatch({
+        type: GET_LISTS_ANIMALS_ADOPTED_PENDING,
         payload: res.data.data
       })
     )

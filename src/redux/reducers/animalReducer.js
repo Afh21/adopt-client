@@ -2,12 +2,14 @@ import {
   GET_ANIMALS,
   LOADING,
   ADOPT_ANIMAL,
-  GET_PROFILE_ANIMAL
+  GET_PROFILE_ANIMAL,
+  GET_LISTS_ANIMALS_ADOPTED_PENDING
 } from "../actions/types";
 
 const initialState = {
   animals: [],
   animal: {},
+  listAnimals: [],
   loading: false
 };
 
@@ -22,6 +24,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         animals: action.payload,
+        loading: false
+      };
+    case GET_LISTS_ANIMALS_ADOPTED_PENDING:
+      return {
+        ...state,
+        listAnimals: action.payload,
         loading: false
       };
     case GET_PROFILE_ANIMAL:
