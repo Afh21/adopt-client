@@ -23,7 +23,7 @@ import Adoptions from "../dashboard/adoption/adoption";
 
 import Breed from "../../components/dashboard/master/type-breed/type-breed";
 import Rh from "../../components/dashboard/master/type-rh/type-rh";
-import MapGoogle from "../../components/dashboard/map/map-google";
+import MapAdoptions from "../../components/dashboard/map/map-Adoptions";
 // import ProtectedRoute from "../../utilities/RoutesProtected/ProtectedRoute";
 // import NoFound from "../noFound/not-found";
 
@@ -233,7 +233,11 @@ class Sidebar extends Component {
                   path={`${match.path}animal/edit/:animalId`}
                   component={AnimalEdit}
                 />
-                <Route exact path={`${match.path}map`} component={MapGoogle} />
+                <Route
+                  exact
+                  path={`${match.path}map`}
+                  component={MapAdoptions}
+                />
                 <Route exact path={`${match.path}users`} component={User} />
                 <Route
                   exact

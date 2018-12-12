@@ -26,9 +26,8 @@ class Register extends Component {
       values.phone = values.prefix + "" + values.phone;
       values.prefix = "";
       values.coords = this.state.seeCoordsUser;
-      console.log(values);
       if (!err) {
-        // this.props.registerUser(values, this.props.history);
+        this.props.registerUser(values, this.props.history);
       }
     });
   };

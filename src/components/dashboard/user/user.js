@@ -84,6 +84,14 @@ class User extends Component {
         dataIndex: "email"
       },
       {
+        title: "Residencia",
+        dataIndex: "address"
+      },
+      {
+        title: "Coordenadas",
+        dataIndex: "coords"
+      },
+      {
         title: "Rol",
         dataIndex: "rol",
         render: text =>
@@ -145,18 +153,36 @@ class User extends Component {
       content = <Spin size="large" />;
     } else if (users.data) {
       users.data.map(user => {
+        let coordsT = Object.assign({}, user.coords);
+        let coords = "";
+
+        let coordS = Object.values(coordsT).map(cord => Object.values(cord));
+
+        if (coordS[0] && coordS[1]) {
+          coords = "Lat:  " + coordS[0] + " -   Lng:  " + coordS[1];
+        } else {
+          coords = "No proporciona coordenadas";
+        }
+
         dataArray.push({
           key: user._id,
           name: user.name,
           lastname: user.lastname,
           identity: user.identity,
           phone: user.phone,
-          address: user.address,
           email: user.email,
+          address: user.address,
+          coords: coords,
           birthday: user.birthday,
           rol: user.rol
         });
-        return (content = <Table columns={columns} dataSource={dataArray} />);
+        return (content = (
+          <Table
+            columns={columns}
+            dataSource={dataArray}
+            scroll={{ x: 1600 }}
+          />
+        ));
       });
     }
 

@@ -11,7 +11,6 @@ class MapGoogle extends Component {
   };
 
   handleCoordsInMap = () => {
-    // console.log("Map: ", this.state.goCoords);
     this.props.communicateToChild(false, this.state.goCoords);
   };
 
@@ -38,8 +37,7 @@ class MapGoogle extends Component {
               },
               map: map,
               animation: window.google.maps.Animation.DROP,
-              draggable: true,
-              title: "¿Es tu dirección actual?"
+              draggable: true
             });
             marker.addListener("dragend", e => {
               const position = {};
