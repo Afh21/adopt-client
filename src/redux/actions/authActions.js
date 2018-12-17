@@ -41,6 +41,7 @@ export const loginUser = (userData, history) => dispatch => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
+
       history.push("/dashboard");
     })
     .catch(err =>

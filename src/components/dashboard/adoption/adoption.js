@@ -51,7 +51,7 @@ class AdoptionList extends Component {
         title: "Ups!",
         content: (
           <div>
-            <p>Primero debes aprovar las solicitudes de adopción</p>
+            <p>Primero debes aprobar las solicitudes de adopción</p>
           </div>
         ),
         onOk() {}
@@ -157,7 +157,7 @@ class AdoptionList extends Component {
           text.toString() === "false" ? (
             <Tag color="red"> Pendiente</Tag>
           ) : (
-            <Tag color="green"> Aprovada </Tag>
+            <Tag color="green"> Aprobada </Tag>
           )
       },
       {
@@ -171,7 +171,7 @@ class AdoptionList extends Component {
                 icon="check"
                 onClick={this.handleApproveRequest.bind(this, record)}
               >
-                Aprovar
+                Aprobar
               </Button>
               <Button
                 icon="retweet"

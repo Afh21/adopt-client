@@ -24,7 +24,7 @@ import Adoptions from "../dashboard/adoption/adoption";
 import Breed from "../../components/dashboard/master/type-breed/type-breed";
 import Rh from "../../components/dashboard/master/type-rh/type-rh";
 import MapAdoptions from "../../components/dashboard/map/map-Adoptions";
-// import ProtectedRoute from "../../utilities/RoutesProtected/ProtectedRoute";
+import ProtectedRoute from "../../utilities/RoutesProtected/ProtectedRoute";
 // import NoFound from "../noFound/not-found";
 
 // Redux
@@ -216,45 +216,57 @@ class Sidebar extends Component {
               }}
             >
               <Switch>
-                <Route exact path={`${match.path}`} component={Dashboard} />
-                <Route
+                <ProtectedRoute
+                  exact
+                  path={`${match.path}`}
+                  component={Dashboard}
+                />
+                <ProtectedRoute
                   exact
                   path={`${match.path}user/profile`}
                   component={Profile}
                 />
-                <Route exact path={`${match.path}animals`} component={Animal} />
-                <Route
+                <ProtectedRoute
+                  exact
+                  path={`${match.path}animals`}
+                  component={Animal}
+                />
+                <ProtectedRoute
                   exact
                   path={`${match.path}animal/register`}
                   component={RegisterAnimal}
                 />
-                <Route
+                <ProtectedRoute
                   exact
                   path={`${match.path}animal/edit/:animalId`}
                   component={AnimalEdit}
                 />
-                <Route
+                <ProtectedRoute
                   exact
                   path={`${match.path}map`}
                   component={MapAdoptions}
                 />
-                <Route exact path={`${match.path}users`} component={User} />
-                <Route
+                <ProtectedRoute
+                  exact
+                  path={`${match.path}users`}
+                  component={User}
+                />
+                <ProtectedRoute
                   exact
                   path={`${match.path}user/register`}
                   component={RegisterUser}
                 />
-                <Route
+                <ProtectedRoute
                   exact
                   path={`${match.path}user/adoptions`}
                   component={Adoptions}
                 />
-                <Route
+                <ProtectedRoute
                   exact
                   path={`${match.path}master/type-rh`}
                   component={Rh}
                 />
-                <Route
+                <ProtectedRoute
                   exact
                   path={`${match.path}master/type-breed`}
                   component={Breed}

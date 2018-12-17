@@ -205,7 +205,7 @@ class Animal extends Component {
                     src={
                       item.image === null
                         ? "http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
-                        : item.image
+                        : "http://localhost:5000" + item.image
                     }
                     style={{ borderRadius: 8, height: 130, width: 200 }}
                   />

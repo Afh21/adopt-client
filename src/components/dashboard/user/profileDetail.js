@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 // Redux functions
 import { updateProfile } from "../../../redux/actions/users";
 
+import Map from "../map/map";
+
 // Css
 import {
   Form,
@@ -118,36 +120,76 @@ class ProfileDetail extends Component {
       }
     };
 
+    let admin = (
+      <Card
+        hoverable
+        style={{ width: 250 }}
+        cover={<img alt="example" src={profile.avatar} />}
+        actions={[
+          profile.rol === "guest" ? (
+            <Tooltip placement="bottom" title="Invitado">
+              <Icon type="idcard" style={{ fontSize: "2em" }} />
+            </Tooltip>
+          ) : (
+            <Tooltip placement="bottom" title="Administrador">
+              <Icon type="crown" style={{ fontSize: "2em" }} />
+            </Tooltip>
+          )
+        ]}
+      >
+        <Meta title={`${profile.name + " " + profile.lastname}  `} />
+      </Card>
+    );
+
+    let coords = Object.assign({}, profile.coords);
+    let coordS = Object.values(coords).map(coord => Object.values(coord));
+
+    let position = {
+      lat: Object.assign({}, coordS[0]),
+      lng: Object.assign({}, coordS[1])
+    };
+
     return (
       <div>
         <Row>
           <Col span={12}>
-            <Card
-              hoverable
-              style={{ width: 250 }}
-              cover={<img alt="example" src={profile.avatar} />}
-              actions={[
-                profile.rol === "guest" ? (
-                  <Tooltip placement="bottom" title="Invitado">
-                    <Icon type="idcard" style={{ fontSize: "2em" }} />
-                  </Tooltip>
-                ) : (
-                  <Tooltip placement="bottom" title="Administrador">
-                    <Icon type="crown" style={{ fontSize: "2em" }} />
-                  </Tooltip>
-                ),
+            {profile.rol === "administrator" ? (
+              admin
+            ) : (
+              <Map
+                id="myMap"
+                options={{
+                  center: {
+                    lat: parseFloat(position.lat[0]),
+                    lng: parseFloat(position.lng[0])
+                  },
+                  zoom: 18,
+                  scrollwheel: true
+                }}
+                onMapLoad={map => {
+                  const marker = new window.google.maps.Marker({
+                    position: {
+                      lat: parseFloat(position.lat[0]),
+                      lng: parseFloat(position.lng[0])
+                    },
+                    map: map,
+                    animation: window.google.maps.Animation.DROP
+                  });
+                  marker.addListener("click", e => {
+                    const position = {};
+                    position.lat = e.latLng.lat();
+                    position.lng = e.latLng.lng();
 
-                <Tooltip
-                  placement="right"
-                  title="¿Deseas cambiar la foto?"
-                  visible={state.visibleTooltip}
-                >
-                  <Switch onChange={this.onChange} />
-                </Tooltip>
-              ]}
-            >
-              <Meta title={`${profile.name + " " + profile.lastname}  `} />
-            </Card>
+                    const infoWindow = new window.google.maps.InfoWindow({
+                      content: "Aquí vivo yo. ;) ",
+                      position: { lat: e.latLng.lat(), lng: e.latLng.lng() }
+                    });
+
+                    infoWindow.open(map);
+                  });
+                }}
+              />
+            )}
           </Col>
 
           {/* =========================================  PROFILE ==========================================0 */}

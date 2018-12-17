@@ -1,10 +1,15 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import ProtectedRoute from "./utilities/RoutesProtected/ProtectedRoute";
 
 // Components
-import Landing from "./components/layout/landing";
+// import Landing from "./components/layout/landing";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import IndexDashboard from "./components/dashboard/dashboard/index";
@@ -55,11 +60,12 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <Route exact path="/" component={Landing} />
+            <Route exact path="/" render={() => <Redirect to="/login" />} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Switch>
               <ProtectedRoute path="/dashboard/" component={IndexDashboard} />
+              <Route path="*" render={() => <Redirect to="/login" />} />
             </Switch>
           </div>
         </Router>

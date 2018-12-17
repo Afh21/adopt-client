@@ -33,7 +33,7 @@ class Profile extends Component {
         return (
           <div key={adopt._id} style={{ float: "left", margin: 15 }}>
             <Card
-              style={{ width: 300 }}
+              style={{ width: 200 }}
               cover={
                 <img
                   alt="example"
@@ -67,8 +67,7 @@ class Profile extends Component {
                         : "Pendiente"
                     }`}
                   </Button>
-                </Tooltip>,
-                <Button icon="info-circle">Perfil</Button>
+                </Tooltip>
               ]}
             >
               <Meta

@@ -90,6 +90,19 @@ export const getListAnimalsAdoptedAndPending = () => dispatch => {
     );
 };
 
+// Este método no se implementó al fin... por que se hizo por ajax en la edicion del animal.
+export const updatePhotoAnimal = (id, values, history) => dispatch => {
+  axios
+    .post(`${URL}/master/animal/update/photo/${id}`, values)
+    .then(() => history.push("/dashboard/animals"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
+
 export const updateAnimal = (id, values, history) => dispatch => {
   axios
     .put(`${URL}/master/animal/edit/${id}`, values)

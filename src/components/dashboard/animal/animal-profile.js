@@ -30,12 +30,10 @@ class AnimalProfile extends Component {
           <Row>
             <Col span={12}>
               <div>
-                {data.image === null ? (
+                {data.image !== null ? (
                   <img
                     alt="image_animal"
-                    src={
-                      "http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
-                    }
+                    src={"http://localhost:5000" + data.image}
                     style={{ borderRadius: 8, height: 190, width: 280 }}
                   />
                 ) : null}

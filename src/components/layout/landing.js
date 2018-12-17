@@ -1,12 +1,16 @@
-import React from "react";
-import Navbar from "./navbar";
+// import React from "react";
+//import Navbar from "./navbar";
+//  <Navbar />
+// import { Link } from "react-router-dom";
+
+/*
 
 const Landing = () => {
   return (
-    <div>
-      <Navbar />
-    </div>
+
   );
 };
 
 export default Landing;
+
+*/

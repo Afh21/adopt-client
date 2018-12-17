@@ -171,6 +171,7 @@ class User extends Component {
           identity: user.identity,
           phone: user.phone,
           email: user.email,
+          avatar: user.avatar,
           address: user.address,
           coords: coords,
           birthday: user.birthday,
