@@ -114,7 +114,8 @@ class AnimalEdit extends Component {
     const { getFieldDecorator } = this.props.form;
     const { breeds, rhs, animals } = this.props;
 
-    console.log("File", this.state.file);
+    // console.log("File", this.state.file);
+    console.log("animals: ", animals.animal.image);
 
     return (
       <div className="">
@@ -132,8 +133,8 @@ class AnimalEdit extends Component {
                 <img
                   alt="example"
                   src={
-                    animals.animal.image
-                      ? animals.animal.image
+                    animals.animal.image !== null
+                      ? "http://localhost:5000" + animals.animal.image
                       : "http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
                   }
                 />

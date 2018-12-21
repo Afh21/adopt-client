@@ -42,7 +42,11 @@ export const loginUser = (userData, history) => dispatch => {
       // Set current user
       dispatch(setCurrentUser(decoded));
 
-      history.push("/dashboard");
+      decoded.rol === "administrator"
+        ? history.push("/dashboard")
+        : history.push("/dashboard/user/profile");
+
+      console.log("Login: ", decoded);
     })
     .catch(err =>
       dispatch({
